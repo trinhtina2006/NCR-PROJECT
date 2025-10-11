@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NCR Details</title>
+    <link rel="stylesheet" href="style.css" />    
+</head>
+
+<body>
+    <nav class="navbar">
+        <a href="homepage.html" class="navbar-logo">
+            <img src="images/Crossfire Logo.png" alt="Crossfire Logos"/>
+        </a>
+
+        <span>CROSSFIRE NCR</span>
+
+        <ul class="nav-links">
+            <li><a href="homepage.html">Homepage</a></li>
+            <li><a href="create.html">Create</a></li>
+        </ul>
+    </nav>
+
+    <main class="ncr-container">
+        <h1>NCR REPORT</h1>
+        <label>NCR ID: <span id="ncrId"></span></label><br/>
+        <label>Date: <span id="ncrDate"></span></label><br/>
+        <label>Created By: <span id="name" ></span></label><br/>
+
+        <table class="table-ncr">
+            <tr class="header-row">
+                <th>Item</th>
+                <th>Details</th>
+            </tr>
+            <tr>
+                <th>Product ID</th>
+                <td id="productId"></td>
+            </tr>
+            <tr>
+                <th>Order ID</th>
+                <td id="orderId"></td>
+            </tr>
+            <tr>
+                <th>Process</th>
+                <td id="process"></td>
+            </tr>
+            <tr>
+                <th>Supplier Name</th>
+                <td id="supplier"></td>
+            </tr>
+            <tr>
+                <th>Description of Item</th>
+                <td id="desItem"></td>
+            </tr>
+        </table>
+      
+        <table class="table-ncr single">
+            <tr>
+                <th>Description of Defect:</th>
+            </tr>
+            <tr>
+                <td id="desDefect"></td>
+            </tr>
+        </table>
+      
+        <table class="table-ncr">
+            <tr class="header-row">
+                <th>Quantity Information</th>
+                <th>Details</th>
+            </tr>
+            <tr>
+                <th>Quantity Received</th>
+                <td id="quaReceived"></td>
+            </tr>
+            <tr>
+                <th>Quantity Defect</th>
+                <td id="quaDefect"></td>
+            </tr>
+            <tr>
+                <th>Item Marked Non-Conforming</th>
+                <td id="nonConforming"></td>
+            </tr>
+        </table>
+        
+        <div class="form-btn">
+            <button type="button" class="back-btn" onclick="location.href='homepage.html'">Back</button>
+            <button type="button" class="print-btn" onclick="window.print()">Print</button>
+        </div>
+    </main>
+    <script src="details.js"></script>
+</body>
+<footer>
+    <div class="footer-div">
+        <div class="footer-col">
+            <p>Copyright &copy; Crossfire NCR Form | Rice Programmers</p>
+        </div>
+        <div class="footer-col">
+            <p>Mail: crossfire@gmail.com</p>
+            <p>Phone: +1 &#40;905&#41; 456-7890</p>
+        </div>
+    </div>
+</footer>
+
+</html>

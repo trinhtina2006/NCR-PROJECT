@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NCR HOMEPAGE</title>
+    <script src="menu.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="homepage.html" class="navbar-logo">
+            <img src="images/Crossfire Logo.png" alt="Crossfire Logos"/>
+        </a>
+
+        <span>CROSSFIRE NCR</span>
+
+        <ul class="nav-links">
+            <li><a href="homepage.html">Homepage</a></li>
+            <li><a href="create.html">Create</a></li>
+        </ul>
+    </nav>
+
+    <main id="wrapper">
+        <section>
+            <p>This website allows you to create, view, store, and manage Non-Conformance Reports (NCRs) efficiently. It helps to save time and effort for inspectors, especially when attaching images or video links for demonstration. The website can also generate a PDF file for suppliers.</p>
+        </section>
+
+        <section class="center-section">
+            <p><i>Click here to start creating a new NCR</i></p>
+            <div class="btn-center">
+                <button class="btn-start" onclick="location.href='create.html'">Create NCR</button>
+            </div>
+        </section>
+
+        <section>
+            <div class="list-header">
+                <span>NCR Lists</span>
+                <button class="action-btn create-btn" onclick="location.href='create.html'">+ Create</button>
+            </div>
+    
+            <div class="list-container" id="listContainer">        
+                <div class="list-item headers">
+                    <span class="list-id">Report ID</span>
+                    <span class="list-name">Created By</span>
+                    <span class="list-time">Time Created</span>
+                    <span class="list-status">Status</span>
+                    <span class="list-actions">Actions</span>
+                </div>
+            </div>
+
+        </section>
+        <script src="details.js"></script>
+    </main>
+
+    <footer>
+        <div class="footer-div">
+            <div class="footer-col">
+                <p>Copyright &copy; Crossfire NCR Form | Rice Programmers</p>
+            </div>
+            <div class="footer-col">
+                <p>Mail: crossfire@gmail.com</p>
+                <p>Phone: +1 &#40;905&#41; 456-7890</p>
+            </div>
+        </div>
+    </footer>
+</body>
+
+
+
+</html>
