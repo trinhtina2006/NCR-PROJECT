@@ -32,7 +32,17 @@
 
         <form onsubmit="event.preventDefault(); window.location.href='details.html';">
             <div class="form-container">
-                <fieldset >
+                <fieldset class="form-group two-cols">
+                    <legend>Product Information</legend>
+                    <label>Product ID: <span class="required-asterisk">*</span>
+                        <input id="productId" type="text" placeholder="eg. PR12345678" />
+                    </label>
+                    <label>Order ID: <span class="required-asterisk">*</span>
+                        <input id="orderId" type="text" placeholder="eg. OR12345678" />
+                    </label>
+                </fieldset>
+
+                                <fieldset >
                     <legend>Supplier</legend>
                     <div class="three-cols">
                         <label>Identify Process Applicable: <span class="required-asterisk">*</span></label>
@@ -41,13 +51,13 @@
                     </div>
                     <div class="form-group-2">
                         <label>Supplier Name: <span class="required-asterisk">*</span>
-                            <input id="supplier" type="text" placeholder="Enter name" minlength="3" maxlength="50" required />
+                            <input id="supplier" type="text" placeholder="Enter name" />
                         </label>
                         <label>Description Of Item: <span class="required-asterisk">*</span>
-                            <input id="desItem" type="text" placeholder="Enter description of item" minlength="3" maxlength="50" required />
+                            <input id="desItem" type="text" placeholder="Enter description of item"  />
                         </label>
                         <label>Description of Defect: <span class="required-asterisk">*</span>
-                            <textarea id="desDefect" class="textarea" placeholder="Enter Description" minlength="3" maxlength="200" rows="2"  required></textarea>
+                            <textarea id="desDefect" class="textarea" placeholder="Enter Description" rows="2" ></textarea>
                         </label>
                     </div>
                 </fieldset>
@@ -56,26 +66,26 @@
                     <legend>Quantities</legend>
                     <div class="two-cols">
                         <label>Quantity Received: <span class="required-asterisk">*</span>
-                            <input id="quaReceived" type="number" min="0" required />
+                            <input id="quaReceived" type="number"  />
                         </label>
                         <label>Quantity Defect: <span class="required-asterisk">*</span>
-                            <input id="quaDefect" type="number" min="0" required />
+                            <input id="quaDefect" type="number" />
                         </label>
                     </div>
                     <div class="three-cols">
                         <label>Item Non-Conforming: <span class="required-asterisk">*</span></label> 
-                        <label><input type="radio" name="nonConforming" value="Yes" required /> YES</label>
-                        <label><input type="radio" name="nonConforming" value="No" required /> NO</label>    
+                        <label><input type="radio" name="nonConforming" value="Yes"  /> YES</label>
+                        <label><input type="radio" name="nonConforming" value="No"  /> NO</label>    
                     </div>
                 </fieldset>
 
                 <fieldset class="form-group two-cols">
                     <legend>Representative Sign</legend>
                     <label>Name: <span class="required-asterisk">*</span>
-                        <input type="text" id="repName" name="repName" placeholder="Enter representative name" required />
+                        <input type="text" id="repName" name="repName" placeholder="Enter representative name" />
                     </label>
                     <label>Date: <span class="required-asterisk">*</span>
-                        <input type="date" id="repDate" name="repDate" required />
+                        <input type="date" id="repDate" name="repDate"  />
                     </label>
                 </fieldset>
                 

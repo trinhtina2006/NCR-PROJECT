@@ -43,6 +43,7 @@ document.querySelector("form").addEventListener("submit", function(event){
     const process = Array.from(document.querySelectorAll('input[name="process"]:checked'))
                          .map(cb => cb.parentNode.textContent.trim())
                          .join(', ');
+
     const nonConforming = document.querySelector('input[name="nonConforming"]:checked')?.value;
 
     const params = new URLSearchParams(window.location.search);
@@ -66,6 +67,7 @@ document.querySelector("form").addEventListener("submit", function(event){
 
     localStorage.setItem("reports", JSON.stringify(reports));
 
+    // Chuyển về details
     window.location.href = `details.html?id=${reportId}`;
 });
 
