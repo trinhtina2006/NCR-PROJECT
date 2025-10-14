@@ -45,7 +45,7 @@ fetch('reports.json')
     .catch(err => console.error("Cannot load reports.json:", err));
 
 function renderList(reports) {
-    const container = document.getElementById('listContainer');
+    const container = document.getElementById('listreport');
     container.innerHTML = "";
 
     const statusFilter = document.getElementById("statusFilter").value;

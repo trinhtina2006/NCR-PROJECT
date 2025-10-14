@@ -156,7 +156,7 @@ const reports = {
   };    
   
     const params = new URLSearchParams(window.location.search);
-    const reportId = params.get('id');
+  const reportId = params.get('id');
   
   if (reportId && reports[reportId]) {
     const report = reports[reportId];
