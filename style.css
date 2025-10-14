@@ -321,7 +321,7 @@ footer {
     footer {
         padding: 10px;
     }
-   
+   select {font-size: 1rem;}
 }
 
 /*POP UP*/
@@ -372,14 +372,25 @@ footer {
   background-color: #5897c9;
 }
 
-/*Filter & Sort*/
+
+/* Container filter + sort */
 .filter {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;  
+    gap: 1.4rem;     
+    margin: 10px 0;       
 }
 
 .filter label {
-  font-weight: 500;
+    font-weight: bold;   
 }
+
+.filteropt, .sortopt {
+    padding: 5px 10px;
+    border-radius: 10px;
+    border: 1.5px solid #173451;
+    cursor: pointer;
+}
+
+
