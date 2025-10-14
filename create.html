@@ -7,6 +7,7 @@
         <script src="menu.js"></script>
     </head>
     <body>
+        <script src="create.js"></script>
         <nav class="navbar">
             <a href="homepage.html" class="navbar-logo">
                 <img src="images/Crossfire Logo.png" alt="Crossfire Logos"/>
@@ -25,20 +26,22 @@
             <p>Please fill in the required fields to continue to the next page.</p>
             
             <div class="header-info">
-                <label>NCR ID: <span id="ncrId"></span></label><br/>
+                <label>NCR ID: <span id="ncrId"></span></label>
+                <br/>
                 <label>Date & Time: <span id="ncrDateTime"></span></label>
             </div>
         </header>
 
-        <form onsubmit="event.preventDefault(); window.location.href='details.html';">
+        <form onsubmit="event.preventDefault(); prompt('Please enter your email address:'); alert('Email has been sent to the engineer'); 
+        window.location.href='details.html';">
             <div class="form-container">
                 <fieldset class="form-group two-cols">
                     <legend>Product Information</legend>
                     <label>Product ID: 
-                        <input type="text" placeholder="eg. PR12345678" required />
+                        <input type="text" placeholder="eg. PR12345678" required value="" id="productId"/>
                     </label>
                     <label>Order ID: 
-                        <input type="text" placeholder="eg. OR12345678" required />
+                        <input type="text" placeholder="eg. OR12345678" required value="" id="orderId"/>
                     </label>
                 </fieldset>
 
@@ -46,18 +49,18 @@
                     <legend>Supplier</legend>
                     <div class="three-cols">
                         <label>Identify Process Applicable: </label>
-                        <label><input type="checkbox" name="process" value="yes"/> Supplier or Rec-Insp </label>
-                        <label><input type="checkbox" name="process" value="no"/> WIP (Production Order)</label>    
+                        <label><input type="radio" name="process" value="yes" id="process"/> Supplier or Rec-Insp </label>
+                        <label><input type="radio" name="process" value="no" id="process"/> WIP (Production Order)</label>    
                     </div>
                     <div class="form-group-2">
                         <label>Supplier Name:
-                            <input id="supplier" type="text" placeholder="Enter name" minlength="3" maxlength="50" required />
+                            <input id="supplier" type="text" value="" placeholder="Enter name" minlength="3" maxlength="50" required />
                         </label>
                         <label>Description Of Item:
-                            <input id="desItem" type="text" placeholder="Enter description of item" minlength="3" maxlength="50" required />
+                            <input id="desItem" type="text" value="" placeholder="Enter description of item" minlength="3" maxlength="50" required />
                         </label>
                         <label>Description of Defect:
-                            <textarea class="textarea" placeholder="Enter Description" minlength="0" maxlength="200" rows="2"  required></textarea>
+                            <textarea class="textarea" id="defect" value="" placeholder="Enter Description" minlength="0" maxlength="200" rows="2"  required></textarea>
                         </label>
                     </div>
                 </fieldset>
@@ -66,26 +69,26 @@
                     <legend>Quantities</legend>
                     <div class="two-cols">
                         <label>Quantity Received:
-                            <input id="quaReceived" type="number" min="0" required />
+                            <input id="quaReceived" value="" type="number" min="0" required />
                         </label>
                         <label>Quantity Defect:
-                            <input id="quaDefect" type="number" min="0" required />
+                            <input id="quaDefect" value="" type="number" min="0" required />
                         </label>
                     </div>
                     <div class="three-cols">
                         <label>Item Non-Conforming:</label>
-                        <label><input type="radio" name="nonConforming" value="yes" required /> YES</label>
-                        <label><input type="radio" name="nonConforming" value="no" required /> NO</label>    
+                        <label><input type="radio" name="nonConforming" value="yes" required id="nonConforming"/> YES</label>
+                        <label><input type="radio" name="nonConforming" value="no" required id="nonConforming"/> NO</label>    
                     </div>
                 </fieldset>
 
                 <fieldset class="form-group two-cols">
                     <legend>Representative Sign</legend>
                     <label>Name:
-                        <input type="text" id="repName" name="repName" placeholder="Enter representative name" required />
+                        <input type="text" id="repName" value="" placeholder="Enter representative name" required />
                     </label>
                     <label>Date:
-                        <input type="date" id="repDate" name="repDate" required />
+                        <input type="date" id="repDate" value="" required />
                     </label>
                 </fieldset>
                 

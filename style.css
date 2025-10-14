@@ -9,6 +9,7 @@ main {
     margin-bottom: 15px;
 }
 
+
 #wrapper { padding: 15px 100px;}
 
 p, li, i, label { 
@@ -144,6 +145,7 @@ p, li, i, label {
 
 .details-btn{padding: 7px 10px;}
 .edit-btn {padding: 7px 18px;}
+.delete-btn{padding: 7px 10px;}
 
 .action-btn:hover {
     background-color: #5897c9; 
@@ -318,3 +320,46 @@ footer {
    
 }
 
+/*highlight border*/
+/* 
+label {
+  display: block;
+  margin: 1px;
+  padding: 1px;
+}
+
+.field {
+  margin: 1px;
+  padding: 1px;
+}
+ 
+input:required:empty{
+    background-color: white;
+    border: 1px solid black;
+}
+
+input:invalid {
+  background-color: #ffdddd;
+}
+
+form:invalid {
+  border: 5px solid #ffdddd;
+}
+
+input:valid {
+  background-color: #ddffdd;
+}
+
+form:valid {
+  border: 5px solid #ddffdd;
+}
+
+input:required {
+  border-color: maroon;
+  border-width: 3px;
+}
+
+
+input:required:invalid {
+  border-color: #c00000;
+} */
