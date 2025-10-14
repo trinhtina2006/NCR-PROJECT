@@ -6,8 +6,8 @@
         <title>Create</title>
         <script src="menu.js"></script>
     </head>
+  
     <body>
-        <script src="create.js"></script>
         <nav class="navbar">
             <a href="homepage.html" class="navbar-logo">
                 <img src="images/Crossfire Logo.png" alt="Crossfire Logos"/>
@@ -20,47 +20,57 @@
                 <li><a href="create.html">Create</a></li>
             </ul>
         </nav>
+            <!-- POPUP -->
+        <div id="emailPopup" class="popup-email">
+            <div class="popup-content">
+                <h3>Send NCR to Engineer</h3>
+                <p>Please enter the engineer's email:</p>
+                <input type="email" id="emailInput" placeholder="example@gmail.com" required>
+                <div class="popup-buttons">
+                    <button class="popup-send" onclick="sendEmail()">SEND</button>
+                    <button class="popup-cancel" onclick="closePopup()">CANCEL</button>
+                </div>
+            </div>
+        </div>
 
         <header class="header">
             <h1>Create NCR</h1>
             <p>Please fill in the required fields to continue to the next page.</p>
             
             <div class="header-info">
-                <label>NCR ID: <span id="ncrId"></span></label>
-                <br/>
+                <label>NCR ID: <span id="ncrId"></span></label><br/>
                 <label>Date & Time: <span id="ncrDateTime"></span></label>
             </div>
         </header>
 
-        <form onsubmit="event.preventDefault(); prompt('Please enter your email address:'); alert('Email has been sent to the engineer'); 
-        window.location.href='details.html';">
+        <form onsubmit="event.preventDefault(); window.location.href='details.html';">
             <div class="form-container">
                 <fieldset class="form-group two-cols">
                     <legend>Product Information</legend>
-                    <label>Product ID: 
-                        <input type="text" placeholder="eg. PR12345678" required value="" id="productId"/>
+                    <label>Product ID: <span class="required-asterisk">*</span>
+                        <input id="productId" type="text" placeholder="eg. PR12345678" />
                     </label>
-                    <label>Order ID: 
-                        <input type="text" placeholder="eg. OR12345678" required value="" id="orderId"/>
+                    <label>Order ID: <span class="required-asterisk">*</span>
+                        <input id="orderId" type="text" placeholder="eg. OR12345678" />
                     </label>
                 </fieldset>
 
                 <fieldset >
                     <legend>Supplier</legend>
                     <div class="three-cols">
-                        <label>Identify Process Applicable: </label>
-                        <label><input type="radio" name="process" value="yes" id="process"/> Supplier or Rec-Insp </label>
-                        <label><input type="radio" name="process" value="no" id="process"/> WIP (Production Order)</label>    
+                        <label>Identify Process Applicable: <span class="required-asterisk">*</span></label>
+                        <label><input type="checkbox" name="process" value="Supplier or Rec-Insp"/> Supplier or Rec-Insp </label>
+                        <label><input type="checkbox" name="process" value="WIP (Production Order)"/> WIP (Production Order)</label>    
                     </div>
                     <div class="form-group-2">
-                        <label>Supplier Name:
-                            <input id="supplier" type="text" value="" placeholder="Enter name" minlength="3" maxlength="50" required />
+                        <label>Supplier Name: <span class="required-asterisk">*</span>
+                            <input id="supplier" type="text" placeholder="Enter name" />
                         </label>
-                        <label>Description Of Item:
-                            <input id="desItem" type="text" value="" placeholder="Enter description of item" minlength="3" maxlength="50" required />
+                        <label>Description Of Item: <span class="required-asterisk">*</span>
+                            <input id="desItem" type="text" placeholder="Enter description of item"  />
                         </label>
-                        <label>Description of Defect:
-                            <textarea class="textarea" id="defect" value="" placeholder="Enter Description" minlength="0" maxlength="200" rows="2"  required></textarea>
+                        <label>Description of Defect: <span class="required-asterisk">*</span>
+                            <textarea id="desDefect" class="textarea" placeholder="Enter Description" rows="2" ></textarea>
                         </label>
                     </div>
                 </fieldset>
@@ -68,32 +78,32 @@
                 <fieldset class="form-group">
                     <legend>Quantities</legend>
                     <div class="two-cols">
-                        <label>Quantity Received:
-                            <input id="quaReceived" value="" type="number" min="0" required />
+                        <label>Quantity Received: <span class="required-asterisk">*</span>
+                            <input id="quaReceived" type="number"  />
                         </label>
-                        <label>Quantity Defect:
-                            <input id="quaDefect" value="" type="number" min="0" required />
+                        <label>Quantity Defect: <span class="required-asterisk">*</span>
+                            <input id="quaDefect" type="number" />
                         </label>
                     </div>
                     <div class="three-cols">
-                        <label>Item Non-Conforming:</label>
-                        <label><input type="radio" name="nonConforming" value="yes" required id="nonConforming"/> YES</label>
-                        <label><input type="radio" name="nonConforming" value="no" required id="nonConforming"/> NO</label>    
+                        <label>Item Non-Conforming: <span class="required-asterisk">*</span></label> 
+                        <label><input type="radio" name="nonConforming" value="Yes"  /> YES</label>
+                        <label><input type="radio" name="nonConforming" value="No"  /> NO</label>    
                     </div>
                 </fieldset>
 
                 <fieldset class="form-group two-cols">
                     <legend>Representative Sign</legend>
-                    <label>Name:
-                        <input type="text" id="repName" value="" placeholder="Enter representative name" required />
+                    <label>Name: <span class="required-asterisk">*</span>
+                        <input type="text" id="repName" name="repName" placeholder="Enter representative name" />
                     </label>
-                    <label>Date:
-                        <input type="date" id="repDate" value="" required />
+                    <label>Date: <span class="required-asterisk">*</span>
+                        <input type="date" id="repDate" name="repDate"  />
                     </label>
                 </fieldset>
                 
                 <div class="form-btn">
-                    <button type="submit" class="save-btn">SAVE</button>
+                    <button type="button" class="save-btn" onclick="SaveWithDataValid()">SAVE</button>
                     <button type="button" class="cancel-btn" onclick="location.href='homepage.html'">CANCEL</button>
                 </div>            
             </div>
