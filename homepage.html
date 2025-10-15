@@ -38,21 +38,6 @@
                 <span>NCR Lists</span>
                 <button class="action-btn create-btn" onclick="location.href='create.html'">+ Create</button>
             </div>
-
-            <div class="filter">
-                <label for="statusFilter">Filter by Status:</label>
-                <select id="statusFilter" class="filteropt">
-                    <option value="all">All</option>
-                    <option value="Active">Active</option>
-                    <option value="Closed">Closed</option>
-                </select>
-              
-                <label for="sortOption">Sort by:</label>
-                <select id="sortOption" class="sortopt">
-                    <option value="date">Date</option>
-                    <option value="name">Name</option>
-                </select>
-            </div>              
     
             <div class="list-container" id="listContainer">        
                 <div class="list-item headers">
@@ -62,13 +47,10 @@
                     <span class="list-status">Status</span>
                     <span class="list-actions">Actions</span>
                 </div>
-                <div id="listreport">
-
-                </div>
             </div>
 
         </section>
-        <script src="details.js"></script>
+        <script src="homepage.js"></script>
     </main>
 
     <footer>
@@ -83,4 +65,7 @@
         </div>
     </footer>
 </body>
+
+
+
 </html>
