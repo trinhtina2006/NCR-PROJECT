@@ -1,58 +1,100 @@
-document.addEventListener("DOMContentLoaded", function() {
-  const access = localStorage.getItem("lastId");
-  const accessKey = JSON.parse(access);
-  console.log(accessKey);
+const params = new URLSearchParams(window.location.search);
+const reportId = params.get('id');
 
-  const ObjectString2 = localStorage.getItem(accessKey);
-  console.log("Raw NCR string:", ObjectString2);
-  if (!ObjectString2) {
-  console.error("No NCR data found in localStorage");
-  return;
+const reportsLocal = JSON.parse(localStorage.getItem("reports")) || {};
+
+if (reportId && reportsLocal[reportId]) {
+    displayReport(reportsLocal[reportId], reportId);
+} else {
+    fetch('reports.json')
+      .then(response => response.json())
+      .then(allReports => {
+          if (reportId && allReports[reportId]) {
+              displayReport(allReports[reportId], reportId);
+          }
+      })
+      .catch(err => console.error("Cannot load reports.json:", err));
 }
 
-  const myObject2 = JSON.parse(ObjectString2);
-  console.log("Parsed report:", myObject2);
-  console.log(myObject2);
+function displayReport(report, id) {
+    document.getElementById('productId').innerText = report.productId;
+    document.getElementById('orderId').innerText = report.orderId;
+    document.getElementById('process').innerText = report.process;
+    document.getElementById('supplier').innerText = report.supplier;
+    document.getElementById('desItem').innerText = report.desItem;
+    document.getElementById('desDefect').innerText = report.desDefect;
+    document.getElementById('quaReceived').innerText = report.quaReceived;
+    document.getElementById('quaDefect').innerText = report.quaDefect;
+    document.getElementById('nonConforming').innerText = report.nonConforming;
+    document.getElementById('ncrDate').innerText = report.date;
+    document.getElementById('name').innerText = report.name;
+    document.getElementById('ncrId').innerText = id;
+}
 
-  const ncrId = accessKey;
+let allReports = {};
 
-  const reports = {
-      [ncrId]: {
-        productId: myObject2.product,
-        orderId: myObject2.order,
-        process: myObject2.process,
-        supplier: myObject2.supplier,
-        desItem: myObject2.defectI,
-        desDefect: myObject2.defect,
-        quaReceived: parseInt(myObject2.Qreceive),
-        quaDefect: parseInt(myObject2.Qdefect),
-        nonConforming: myObject2.nonConform,
-        date: myObject2.date,
-        name: myObject2.name,
-        depClosed: "yes"
-      }
-    };    
-    
-    const params = new URLSearchParams(window.location.search);
-    const reportId = ncrId;
-    
-    if (reportId && reports[reportId]) {
-      const report = reports[reportId];
-    
-      document.getElementById('productId').innerText = report.productId;
-      console.log("Product ID:", report.productId);
-      document.getElementById('orderId').innerText = report.orderId;
-      document.getElementById('process').innerText = report.process;
-      document.getElementById('supplier').innerText = report.supplier;
-      document.getElementById('desItem').innerText = report.desItem;
-      document.getElementById('desDefect').innerText = report.desDefect;
-      document.getElementById('quaReceived').innerText = report.quaReceived;
-      document.getElementById('quaDefect').innerText = report.quaDefect;
-      document.getElementById('nonConforming').innerText = report.nonConforming;
-      document.getElementById('ncrDate').innerText = report.date;
-      document.getElementById('name').innerText = report.name;
-    
-      document.getElementById('ncrId').innerText = reportId;
-    } 
+fetch('reports.json')
+    .then(response => response.json())
+    .then(allReportsJson => {
+        allReports = { ...allReportsJson, ...reportsLocal };
+        renderList(allReports);
 
-});
+        document.getElementById("statusFilter").addEventListener("change", () => renderList(allReports));
+        document.getElementById("sortOption").addEventListener("change", () => renderList(allReports));
+    })
+    .catch(err => console.error("Cannot load reports.json:", err));
+
+function renderList(reports) {
+    const container = document.getElementById('listreport');
+    container.innerHTML = "";
+
+    const statusFilter = document.getElementById("statusFilter").value;
+    const sortOption = document.getElementById("sortOption").value;
+
+    let reportArray = Object.entries(reports).map(([id, report]) => ({ id, ...report }));
+
+    if (statusFilter !== "all") {
+        reportArray = reportArray.filter(r => (r.depClosed === "Yes" ? "Closed" : "Active") === statusFilter);
+    }
+
+    if (sortOption === "date") {
+        reportArray.sort((a, b) => new Date(b.date) - new Date(a.date));
+    } else if (sortOption === "name") {
+        reportArray.sort((a, b) => a.name.localeCompare(b.name));
+    }
+
+    if (reportArray.length === 0) {
+        container.innerHTML = "<p>No reports found.</p>";
+        return;
+    }
+
+    for (const r of reportArray) {
+        const status = r.depClosed === "Yes" ? "Closed" : "Active";
+        container.innerHTML += `
+        <div class="list-item">
+            <span class="list-id">${r.id}</span>
+            <span class="list-name">${r.name}</span>
+            <span class="list-time">${new Date(r.date).toLocaleDateString()}</span>
+            <span class="list-status">${status}</span>
+            <span class="list-actions">
+                ${status === "Closed"
+                    ? `<button class="action-btn details-btn" onclick="location.href='details.html?id=${r.id}'">Details</button>
+                       <button class="action-btn delete-btn" onclick="deleteReport('${r.id}')">Delete</button>`
+                    : `<button class="action-btn edit-btn" onclick="location.href='edit.html?id=${r.id}'">Edit</button>
+                       <button class="action-btn details-btn" onclick="location.href='details.html?id=${r.id}'">Details</button>
+                       <button class="action-btn delete-btn" onclick="deleteReport('${r.id}')">Delete</button>`}
+            </span>
+        </div>`;
+    }
+}
+
+function deleteReport(id) {
+    if (confirm("Are you sure you want to delete this report?")) {
+        const reportsget = JSON.parse(localStorage.getItem("reports")) || {};
+        if (reportsget[id]) {
+            delete reportsget[id];
+            localStorage.setItem("reports", JSON.stringify(reportsget));
+        }
+        location.reload();
+    }
+}
