@@ -144,6 +144,10 @@ function SaveWithDataValid()
     openPopup();
 }
 
+function hasNumber(str) {
+        return /\d/.test(str);
+    }
+
 document.getElementById('productId').addEventListener("input", (event) => {
     if(event.target.value.length === 0) {
         document.getElementById('productError').innerText = "Product ID is required";
