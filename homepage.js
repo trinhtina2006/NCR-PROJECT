@@ -1,166 +1,22 @@
-const reports = {
-    "2023-213": {
-      productId: "PR10015923",
-      orderId: "OR13445283",
-      process: "Supplier or Rec-Insp",
-      supplier: "The Coop Supply",
-      desItem: "Motherboard",
-      desDefect: "Damage on surface",
-      quaReceived: 100,
-      quaDefect: 5,
-      nonConforming: "Yes",
-      date: "2023-01-03",
-      name: "Dwayne Alcala",
-      depClosed: "Yes",
-    },
-    "2025-375": {
-      productId: "PR29418492",
-      orderId: "OR20493002",
-      process: "WIP (Production Order)",
-      supplier: "HardwareSup",
-      desItem: "PowerSupplier",
-      desDefect: "Didnt work properly",
-      quaReceived: 150,
-      quaDefect: 4,
-      nonConforming: "No",
-      date: "2025-02-12",
-      name: "Amgalan Bilguunbold",
-      depClosed: "No",
-    },
-    "2024-738": {
-        productId: "PR93291820",
-        orderId: "OR20120493",
-        process: "WIP (Production Order)",
-        supplier: "Tech",
-        desItem: "RAM 32GB",
-        desDefect: "Inactive function",
-        quaReceived: 50,
-        quaDefect: 7,
-        nonConforming: "Yes",
-        date: "2024-06-28",
-        name: "Lam Phat Tran",
-        depClosed: "No",
-    },
-    "2025-821": {
-        productId: "PR10420137",
-        orderId: "OR44929211",
-        process: "WIP (Production Order)",
-        supplier: "Component Supplies",
-        desItem: "CPU",
-        desDefect: "loose screws",
-        quaReceived: 130,
-        quaDefect: 3,
-        nonConforming: "Yes",
-        date: "2025-08-30",
-        name: "Huyen Trinh Tran",
-        depClosed: "No",
-    },
-    "2022-883": {
-        productId: "PR03291058",
-        orderId: "OR23049204",
-        process: "Supplier or Rec-Insp",
-        supplier: "SmartHardware",
-        desItem: "Canon Printer",
-        desDefect: "paper jams",
-        quaReceived: 200,
-        quaDefect: 30,
-        nonConforming: "No",
-        date: "2022-01-13",
-        name: "Dave Kendall",
-        depClosed: "Yes",
-    },
-    "2024-834": {
-        productId: "PR020492014",
-        orderId: "OR22940184",
-        process: "WIP (Production Order) ",
-        supplier: "GraphicsBuy",
-        desItem: "Epson Scanners",
-        desDefect: "connection issues, fail for data transfer",
-        quaReceived: 700,
-        quaDefect: 2,
-        nonConforming: "No",
-        date: "2024-06-14",
-        name: "John Brown",
-        depClosed: "Yes",
-    },
-    "2025-239": {
-        productId: "PR040203492",
-        orderId: "OR29139403",
-        process: "Supplier or Rec-Insp",
-        supplier: "Coder",
-        desItem: "AMD Graphics Card",
-        desDefect: "overheating, outdated drivers",
-        quaReceived: 100,
-        quaDefect: 10,
-        nonConforming: "Yes",
-        date: "2025-04-04",
-        name: "Kyle Son",
-        depClosed: "No",
-    },     
-    "2024-119": {
-        productId: "PR010220493",
-        orderId: "OR00482894",
-        process: "Supplier or Rec-Insp",
-        supplier: "Best Tech Ever",
-        desItem: "Portable SSD 1TB",
-        desDefect: "back blocks, problematic updates and read/write",
-        quaReceived: 150,
-        quaDefect: 15,
-        nonConforming: "Yes",
-        date: "2024-03-30",
-        name: "Taylor Williams",
-        depClosed: "No",
-    },
-    "2025-442": {
-        productId: "PR02884373",
-        orderId: "OR29213477",
-        process: "WIP (Production Order)",
-        supplier: "EcoSup",
-        desItem: "Logitech Silent Mouse",
-        desDefect: "keep jumping randomly, difficult for scrolling",
-        quaReceived: 200,
-        quaDefect: 5,
-        nonConforming: "Yes",
-        date: "2025-08-22",
-        name: "Joe Kenedy",
-        depClosed: "No",
-    }, 
-    "2025-100": {
-        productId: "PR39902340",
-        orderId: "OR04259587",
-        process: "WIP (Production Order)",
-        supplier: "Hightech Supply",
-        desItem: "Sandisk USB",
-        desDefect: "USB is not recognized, failure in request",
-        quaReceived: 350,
-        quaDefect: 28,
-        nonConforming: "No",
-        date: "2025-07-15",
-        name: "Anna Louis",
-        depClosed: "Yes",
-    },
-    "2024-244": {
-        productId: "PR49103947",
-        orderId: "OR29494837",
-        process: "Supplier or Rec-Insp",
-        supplier: "Hardware Intel",
-        desItem: "4K HDMI Cable",
-        desDefect: "can not be connected, shows no signal message, loose cables",
-        quaReceived: 250,
-        quaDefect: 30,
-        nonConforming: "Yes",
-        date: "2025-05-12",
-        name: "Isaac Anderson",
-        depClosed: "No",
-    },
-  };    
-  
-    const params = new URLSearchParams(window.location.search);
-  const reportId = params.get('id');
-  
-  if (reportId && reports[reportId]) {
-    const report = reports[reportId];
-  
+const params = new URLSearchParams(window.location.search);
+const reportId = params.get('id');
+
+const reportsLocal = JSON.parse(localStorage.getItem("reports")) || {};
+
+if (reportId && reportsLocal[reportId]) {
+    displayReport(reportsLocal[reportId], reportId);
+} else {
+    fetch('reports.json')
+      .then(response => response.json())
+      .then(allReports => {
+          if (reportId && allReports[reportId]) {
+              displayReport(allReports[reportId], reportId);
+          }
+      })
+      .catch(err => console.error("Cannot load reports.json:", err));
+}
+
+function displayReport(report, id) {
     document.getElementById('productId').innerText = report.productId;
     document.getElementById('orderId').innerText = report.orderId;
     document.getElementById('process').innerText = report.process;
@@ -172,28 +28,161 @@ const reports = {
     document.getElementById('nonConforming').innerText = report.nonConforming;
     document.getElementById('ncrDate').innerText = report.date;
     document.getElementById('name').innerText = report.name;
-  
-    const now = new Date();
-    document.getElementById('ncrId').innerText = reportId;
-  } 
+    document.getElementById('ncrId').innerText = id;
+}
 
-const container = document.getElementById('listContainer');
+let allReports = {};
 
-for (const id in reports) {
-    const report = reports[id];
 
-    container.innerHTML += `
-    <div class="list-item">
-        <span class="list-id">${id}</span>
-        <span class="list-name">${report.name}</span>
-        <span class="list-time">${report.date}</span>
-        <span class="list-status">${report.depClosed === "Yes" ? "Closed" : "Active"}</span>
-        <span class="list-actions">
-            ${report.depClosed == "Yes" 
-                ? `<button class="action-btn details-btn" onclick="location.href='details.html?id=${id}'">Details</button>` 
-                : `<button class="action-btn edit-btn" onclick="location.href='edit.html?id=${id}'">Edit</button>
-                   <button class="action-btn details-btn" onclick="location.href='details.html?id=${id}'">Details</button>`
+fetch('reports.json')
+    .then(response => response.json())
+    .then(allReportsJson => {
+        allReports = { ...allReportsJson, ...reportsLocal };
+        renderList(allReports);
+
+        document.getElementById("deptFilter").addEventListener("change", () => renderList(allReports));
+        document.getElementById("statusFilter").addEventListener("change", () => renderList(allReports));
+        document.getElementById("sortOption").addEventListener("change", () => renderList(allReports));
+        document.getElementById("pageSize").addEventListener("change", () => {
+            currentPage = 1; 
+            renderList(allReports);
+});
+    })
+    .catch(err => console.error("Cannot load reports.json:", err));
+
+let currentPage = 1;
+let reportsPerPage = 5;
+
+function renderList(reports) {
+    const pageSizeSelect = document.getElementById("pageSize");
+    const container = document.getElementById('listreport');
+    const paging = document.getElementById('paging')
+    container.innerHTML = "";
+    paging.innerHTML = "";
+
+    const deptFilter = document.getElementById("deptFilter").value;
+    const statusFilter = document.getElementById("statusFilter").value;
+    const sortOption = document.getElementById("sortOption").value;
+
+    let reportArray = Object.entries(reports).map(([id, report]) => ({ id, ...report }));
+
+    if (statusFilter !== "all") {
+        reportArray = reportArray.filter(r => {
+            if (r.depClosed === "Yes") return statusFilter === "Closed";
+            if (r.depClosed === "Draft") return statusFilter === "Draft";
+            return statusFilter === "Active";
+        });
+    }
+    if (deptFilter !== "all") {
+        reportArray = reportArray.filter(r => r.dept === deptFilter);
+    }
+    if (sortOption === "date") {
+        reportArray.sort((a, b) => new Date(b.date) - new Date(a.date));
+    } else if (sortOption === "name") {
+        reportArray.sort((a, b) => a.supplier.localeCompare(b.supplier));
+    }
+
+    reportsPerPage = pageSizeSelect.value === "all" ? reportArray.length : parseInt(pageSizeSelect.value);
+
+    if (reportArray.length === 0) {
+        container.innerHTML = "<p>No reports found.</p>";
+        return;
+    }
+
+    //paging
+    const totalPages = Math.ceil(reportArray.length / reportsPerPage);
+    const startIndex = (currentPage - 1) * reportsPerPage;
+    const endIndex = startIndex + reportsPerPage;
+    const reportsToShow = reportArray.slice(startIndex, endIndex);
+
+    for (const r of reportsToShow) {
+        const status = r.isDraft ? "Draft" : (r.depClosed === "Yes" ? "Closed" : "Active");
+
+        container.innerHTML += `
+        <div class="list-item">
+            <span class="list-id">${r.id}</span>
+            <span class="list-supply">${r.supplier}</span>
+            <span class="list-name">${r.dept}</span>
+            <span class="list-time">${new Date(r.date).toLocaleDateString()}</span>
+            <span class="list-status">${status}</span>
+            <span class="list-actions">
+            ${
+                status === "Closed"
+                    ? `<button class="action-btn details-btn" onclick="location.href='details.html?id=${r.id}'">Details</button>
+                       <button class="action-btn delete-btn" onclick="deleteReport('${r.id}')">Delete</button>`
+                    : status === "Draft"
+                    ? `<button class="action-btn edit-btn" onclick="location.href='edit.html?id=${r.id}'">Resume</button>
+                       <button class="action-btn delete-btn" onclick="deleteReport('${r.id}')">Delete</button>`
+                    : `<button class="action-btn edit-btn" onclick="location.href='edit.html?id=${r.id}'">Edit</button>
+                       <button class="action-btn details-btn" onclick="location.href='details.html?id=${r.id}'">Details</button>
+                       <button class="action-btn delete-btn" onclick="deleteReport('${r.id}')">Delete</button>`
             }
         </span>
-    </div>`;
+        </div>`;
+    }
+
+    paging.innerHTML = `
+        <button ${currentPage === 1 ? "disabled" : ""} onclick="changePage(${currentPage - 1})">Previous</button>
+        <span>Page ${currentPage} of ${totalPages}</span>
+        <button ${currentPage === totalPages ? "disabled" : ""} onclick="changePage(${currentPage + 1})">Next</button>
+    `;
 }
+
+function changePage(page) {
+    const statusFilter = document.getElementById("statusFilter").value;
+    const sortOption = document.getElementById("sortOption").value;
+
+    const reports = allReports;
+    const reportArray = Object.entries(reports).map(([id, report]) => ({ id, ...report }));
+
+    const totalPages = Math.ceil(reportArray.length / reportsPerPage);
+    if (page < 1 || page > totalPages) return;
+
+    currentPage = page;
+    renderList(allReports);
+}
+
+function deleteReport(id) {
+    if (confirm("Are you sure you want to delete this report?")) {
+        const reportsget = JSON.parse(localStorage.getItem("reports")) || {};
+
+        if (reportsget[id]) {
+            delete reportsget[id];
+            localStorage.setItem("reports", JSON.stringify(reportsget));
+        }
+
+        location.reload();
+    }
+}
+
+/* ENGINEER LIST */
+function renderEngineerList() {
+    const reports = JSON.parse(localStorage.getItem("reports")) || {};
+    const pendingNCRs = Object.entries(reports).filter(([id, ncr]) => ncr.status === "PendingEngineer");
+    const container = document.getElementById("engineerNCR");
+    container.innerHTML = "";
+
+    if (pendingNCRs.length === 0) {
+        container.innerHTML = "<p>No pending NCRs</p>";
+    } else {
+        pendingNCRs.forEach(([id, ncr]) => {
+            container.innerHTML += `
+            <div class="list-item">
+                <span class="list-id">${id}</span>
+                <span class="list-supply">${r.supplier}</span>
+                <span class="list-name">${ncr.dept}</span>
+                <span class="list-time">${new Date(ncr.date).toLocaleDateString()}</span>
+                <span class="list-status"></span>
+                <span class="list-actions">
+                    <button class="action-btn fill-btn" onclick="location.href='E_create.html?id=${id}'">Fill In</button>
+                    <button class="action-btn edit-btn" onclick="location.href='edit.html?id=${id}'">Edit</button>
+                    <button class="action-btn details-btn" onclick="location.href='details.html?id=${id}'">Details</button>
+                </span>
+            </div
+            `;
+        });
+    }
+}
+
+
+renderEngineerList();

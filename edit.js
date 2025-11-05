@@ -62,7 +62,9 @@ document.querySelector("form").addEventListener("submit", function(event){
         desDefect: document.getElementById("desDefect").value,
         quaReceived: document.getElementById("quaReceived").value,
         quaDefect: document.getElementById("quaDefect").value,
-        nonConforming: nonConforming
+        nonConforming: nonConforming,
+        dept: "Quality",
+        status:"PendingEngineer"
     };
 
     localStorage.setItem("reports", JSON.stringify(reports));
@@ -77,10 +79,6 @@ function confirmCancel() {
         location.href = 'homepage.html';
     }
 }
-
-function hasNumber(str) {
-        return /\d/.test(str);
-    }
 
 document.getElementById('productId').addEventListener("input", (event) => {
     if(event.target.value.length === 0) {
@@ -102,10 +100,8 @@ document.getElementById('productId').addEventListener("input", (event) => {
             }
         }
 
-    } else if(!hasNumber(event.target.value[9])) { // Check if the 9th character is a number
-        document.getElementById('productError').innerText = "Product ID can only contain 8 numbers after 'PR'";
-        document.getElementById('productId').style.backgroundColor = "#ffdddd";
-    } else {
+    } 
+    else {
         document.getElementById('productId').style.backgroundColor = "#ffffffff";
         document.getElementById('productError').innerText = "";
     }
@@ -132,10 +128,8 @@ document.getElementById('orderId').addEventListener("input", (event) => {
                     return;
                 }
             }
-        } else if(!hasNumber(event.target.value[9])) { // Check if the 9th character is a number
-            document.getElementById('orderError').innerText = "Order ID can only contain 8 numbers after 'OR'";
-            document.getElementById('orderId').style.backgroundColor = "#ffdddd";
-        } else {
+        }
+        else {
             document.getElementById('orderId').style.backgroundColor = "#ffffffff";
             document.getElementById('orderError').innerText = "";
         }

@@ -22,12 +22,15 @@
     </nav>
 
     <main id="wrapper">
-        <section>
-            <p>This website allows you to create, view, store, and manage Non-Conformance Reports (NCRs) efficiently. It helps to save time and effort for inspectors, especially when attaching images or video links for demonstration. The website can also generate a PDF file for suppliers.</p>
-        </section>
-
         <section class="center-section">
-            <p><i>Click here to start creating a new NCR</i></p>
+            <p>
+                <i>Click here to start creating a new NCR</i>
+                <span class="tooltip">&#9432;
+                    <span class="tooltip-text">
+                        This website allows you to create, view, store, and manage Non-Conformance Reports (NCRs) efficiently. It helps to save time and effort, especially when attaching images or video for demonstration. The website can also generate a PDF file for suppliers
+                    </span>
+                </span>
+            </p>
             <div class="btn-center">
                 <button class="btn-start" onclick="location.href='create.html'">Create NCR</button>
             </div>
@@ -36,15 +39,22 @@
         <section>
             <div class="list-header">
                 <span>NCR Lists</span>
-                <button class="action-btn create-btn" onclick="location.href='create.html'">+ Create</button>
             </div>
 
             <div class="filter">
+                <label for="deptFilter">Filter by Department:</label>
+                <select id="deptFilter" class="filteropt">
+                    <option value="all">All</option>
+                    <option value="Quality">Quality</option>
+                    <option value="Engineering">Engineering</option>
+                </select>
+
                 <label for="statusFilter">Filter by Status:</label>
                 <select id="statusFilter" class="filteropt">
                     <option value="all">All</option>
                     <option value="Active">Active</option>
                     <option value="Closed">Closed</option>
+                    <option value="Draft">Draft</option>
                 </select>
               
                 <label for="sortOption">Sort by:</label>
@@ -52,23 +62,48 @@
                     <option value="date">Date</option>
                     <option value="name">Name</option>
                 </select>
+
+                <label for="pageSize">Show per page:</label>
+                <select id="pageSize" class="pageopt">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="all">All</option>
+                </select>
             </div>              
     
             <div class="list-container" id="listContainer">        
                 <div class="list-item headers">
                     <span class="list-id">Report ID</span>
+                    <span class="list-supply">Supplier</span>
                     <span class="list-name">Created By</span>
                     <span class="list-time">Time Created</span>
                     <span class="list-status">Status</span>
                     <span class="list-actions">Actions</span>
                 </div>
-                <div id="listreport">
+                <div id="listreport"></div>
+                <div class="paging" id="paging"></div>
+            </div>
+        </section>
 
-                </div>
+        <section>
+            <div class="list-header">
+                <span>Engineer Action Items</span>
             </div>
 
+            <div class="list-container" id="listContainerEngineer">        
+                <div class="list-item headers">
+                    <span class="list-id">Report ID</span>
+                    <span class="list-supply">Supplier</span>
+                    <span class="list-name">Created By</span>
+                    <span class="list-time">Time Created</span>
+                    <span class="list-status">Status</span>
+                    <span class="list-actions">Actions</span>
+                </div>
+                <div id="engineerNCR"></div>
+            </div>
         </section>
-        <script src="details.js"></script>
+        <script src="homepage.js"></script>
     </main>
 
     <footer>

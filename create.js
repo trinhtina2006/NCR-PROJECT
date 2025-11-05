@@ -7,13 +7,16 @@ document.getElementById('ncrId').innerText = ncrId;
 
 document.getElementById('ncrDateTime').innerText = date.toLocaleString();
 
+const today = new Date();
+const dateStr = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+document.getElementById("repDate").value = dateStr;
+
 function confirmCancel() {
     const userconfirm = confirm("Are you sure you want to cancel?, Any changes will not be saved.");
     if (userconfirm) {
         location.href = 'homepage.html';
     }
 }
-
 
 function saveFormData() {
     fetch('reports.json') 
@@ -36,7 +39,9 @@ function saveFormData() {
             desDefect: document.getElementById("desDefect").value,
             quaReceived: document.getElementById("quaReceived").value,
             quaDefect: document.getElementById("quaDefect").value,
-            nonConforming: nonConforming
+            dept: "Quality",
+            nonConforming: nonConforming,
+            status:"PendingEngineer"
         };
 
     let reports = JSON.parse(localStorage.getItem("reports")) || {};
@@ -144,10 +149,6 @@ function SaveWithDataValid()
     openPopup();
 }
 
-function hasNumber(str) {
-        return /\d/.test(str);
-    }
-
 document.getElementById('productId').addEventListener("input", (event) => {
     if(event.target.value.length === 0) {
         document.getElementById('productError').innerText = "Product ID is required";
@@ -158,7 +159,7 @@ document.getElementById('productId').addEventListener("input", (event) => {
     } else if(event.target.value.includes(" ")) {
         document.getElementById('productError').innerText = "Product ID must remove any spaces";
         document.getElementById('productId').style.backgroundColor = "#ffdddd";
-    }  else if(event.target.value.length < 10) {
+    }  else if(event.target.value.length != 10) {
         document.getElementById('productError').innerText = "Product ID must include 8 numbers";
         document.getElementById('productId').style.backgroundColor = "#ffdddd";
         for(let i = 2; i < event.target.value.length; i++) { //check each character after "PR" except the first two and 9th character
@@ -168,10 +169,8 @@ document.getElementById('productId').addEventListener("input", (event) => {
             }
         }
 
-    } else if(!hasNumber(event.target.value[9])) { // Check if the 9th character is a number
-        document.getElementById('productError').innerText = "Product ID can only contain 8 numbers after 'PR'";
-        document.getElementById('productId').style.backgroundColor = "#ffdddd";
-    } else {
+    } 
+    else {
         document.getElementById('productId').style.backgroundColor = "#ffffffff";
         document.getElementById('productError').innerText = "";
     }
@@ -198,10 +197,8 @@ document.getElementById('orderId').addEventListener("input", (event) => {
                     return;
                 }
             }
-        } else if(!hasNumber(event.target.value[9])) { // Check if the 9th character is a number
-            document.getElementById('orderError').innerText = "Order ID can only contain 8 numbers after 'OR'";
-            document.getElementById('orderId').style.backgroundColor = "#ffdddd";
-        } else {
+        } 
+        else {
             document.getElementById('orderId').style.backgroundColor = "#ffffffff";
             document.getElementById('orderError').innerText = "";
         }
@@ -352,3 +349,50 @@ nonConformingRadios.forEach(radio => {
         }
     });
 });
+
+function saveDraft() {
+    const productId = document.getElementById("productId").value.trim();
+    const orderId = document.getElementById("orderId").value.trim();
+
+    if (!productId || !orderId) {
+        alert("Please fill in Product ID and Order ID to save draft.");
+        return;
+    }
+    
+    const report = {
+        date: document.getElementById("repDate").value,
+        name: document.getElementById("repName").value,
+        productId: document.getElementById("productId").value,
+        orderId: document.getElementById("orderId").value,
+        process: getCheckedValues("process"),
+        supplier: document.getElementById("supplier").value,
+        desItem: document.getElementById("desItem").value,
+        desDefect: document.getElementById("desDefect").value,
+        quaReceived: document.getElementById("quaReceived").value,
+        quaDefect: document.getElementById("quaDefect").value,
+        nonConforming: getRadioValue("nonConforming"),
+        date: document.getElementById("repDate").value,
+        name: document.getElementById("repName").value,
+        isDraft: "Draft",
+        dept:"Quality"
+    };
+
+    const reports = JSON.parse(localStorage.getItem("reports")) || {};
+    reports[ncrId] = report;
+    localStorage.setItem("reports", JSON.stringify(reports));
+
+    alert("Draft saved successfully!");
+
+    window.location.href = "homepage.html";
+}
+
+function getCheckedValues(name) {
+    return Array.from(document.querySelectorAll(`input[name="${name}"]:checked`))
+                .map(cb => cb.value)
+                .join(", ");
+}
+
+function getRadioValue(name) {
+    const checked = document.querySelector(`input[name="${name}"]:checked`);
+    return checked ? checked.value : "";
+}

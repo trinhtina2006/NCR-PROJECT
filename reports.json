@@ -11,7 +11,8 @@
     "nonConforming": "Yes",
     "date": "2023-01-03",
     "name": "Dwayne Alcala",
-    "depClosed": "Yes"
+    "depClosed": "Yes",
+    "dept": "Quality"
   },
   "2025-375": {
     "productId": "PR29418492",
@@ -25,7 +26,8 @@
     "nonConforming": "No",
     "date": "2025-02-12",
     "name": "Amgalan Bilguunbold",
-    "depClosed": "No"
+    "depClosed": "No",
+    "dept": "Quality"
   },
   "2024-738": {
     "productId": "PR93291820",
@@ -39,7 +41,8 @@
     "nonConforming": "Yes",
     "date": "2024-06-28",
     "name": "Lam Phat Tran",
-    "depClosed": "No"
+    "depClosed": "No",
+    "dept": "Quality"
   },
   "2025-821": {
     "productId": "PR10420137",
@@ -53,7 +56,8 @@
     "nonConforming": "Yes",
     "date": "2025-08-30",
     "name": "Huyen Trinh Tran",
-    "depClosed": "No"
+    "depClosed": "No",
+    "dept": "Quality"
   },
   "2022-883": {
     "productId": "PR03291058",
@@ -67,7 +71,8 @@
     "nonConforming": "No",
     "date": "2022-01-13",
     "name": "Dave Kendall",
-    "depClosed": "Yes"
+    "depClosed": "Yes",
+    "dept": "Quality"
   },
   "2024-834": {
     "productId": "PR020492014",
@@ -81,7 +86,8 @@
     "nonConforming": "No",
     "date": "2024-06-14",
     "name": "John Brown",
-    "depClosed": "Yes"
+    "depClosed": "Yes",
+    "dept": "Quality"
   },
   "2025-239": {
     "productId": "PR040203492",
@@ -95,7 +101,8 @@
     "nonConforming": "Yes",
     "date": "2025-04-04",
     "name": "Kyle Son",
-    "depClosed": "No"
+    "depClosed": "No",
+    "dept": "Quality"
   },
   "2024-119": {
     "productId": "PR010220493",
@@ -109,7 +116,8 @@
     "nonConforming": "Yes",
     "date": "2024-03-30",
     "name": "Taylor Williams",
-    "depClosed": "No"
+    "depClosed": "No",
+    "dept": "Quality"
   },
   "2025-442": {
     "productId": "PR02884373",
@@ -123,7 +131,8 @@
     "nonConforming": "Yes",
     "date": "2025-08-22",
     "name": "Joe Kenedy",
-    "depClosed": "No"
+    "depClosed": "No",
+    "dept": "Quality"
   },
   "2025-100": {
     "productId": "PR39902340",
@@ -137,7 +146,8 @@
     "nonConforming": "No",
     "date": "2025-07-15",
     "name": "Anna Louis",
-    "depClosed": "Yes"
+    "depClosed": "Yes",
+    "dept": "Quality"
   },
   "2024-244": {
     "productId": "PR49103947",
@@ -151,7 +161,8 @@
     "nonConforming": "Yes",
     "date": "2025-05-12",
     "name": "Isaac Anderson",
-    "depClosed": "No"
+    "depClosed": "No",
+    "dept": "Quality"
 }
 
 }

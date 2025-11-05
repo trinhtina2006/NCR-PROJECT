@@ -1,10 +1,16 @@
 const date= new Date();
-const year = new Date().getFullYear(); 
-reportsLocal = JSON.parse(localStorage.getItem("reports")) || {};
-const ncrId = reportsLocal.id;
+const params = new URLSearchParams(window.location.search);
+const ncrId = params.get('id');
+
+const reportsLocal = JSON.parse(localStorage.getItem("reports")) || {};
+const ncr = reportsLocal[ncrId];
 
 document.getElementById('ncrId').innerText = ncrId;
 document.getElementById('ncrDateTime').innerText = date.toLocaleString();
+
+const today = new Date();
+const dateStr = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+document.getElementById("repDate").value = dateStr;
 
 function confirmCancel() {
     const userconfirm = confirm("Are you sure you want to cancel?, Any changes will not be saved.");
@@ -13,32 +19,26 @@ function confirmCancel() {
     }
 }
 
-
 function saveFormData() {
     fetch('reports.json') 
     .then(response => response.json())
     .then(allReports => {
-        const CF_Engineering = document.querySelector('input[name="CF_Engineering"]:checked')?.value;
-        const customerNotification = document.querySelector('input[name="customerNotification"]:checked')?.value;
-        const drawingUpdate = document.querySelector('input[name="drawingUpdate"]:checked')?.value;
-
-
-        const ncr = {
-            CF_Engineering: CF_Engineering,
-            customerNotification: customerNotification,
-            drawingUpdate: drawingUpdate,
-            disposition: document.getElementById("disposition").value,
-            revNumber: document.getElementById("revNumber")?.value,
-            newRevNumber: document.getElementById("newRevNumber").value,
-            revDate: document.getElementById("revDate").value,
-            //change if included in html
-            engineerName: document.getElementById("engineerName").value,
-            date: document.getElementById("repDate").value,
-            name: document.getElementById("repName").value     
-        };
-
     let reports = JSON.parse(localStorage.getItem("reports")) || {};
-    reports[ncrId] = ncr;   
+    const existingNCR = reports[ncrId] || {};
+
+    existingNCR.CF_Engineering = document.querySelector('input[name="CF_Engineering"]:checked')?.value;
+    existingNCR.customerNotification = document.querySelector('input[name="customerNotification"]:checked')?.value;
+    existingNCR.drawingUpdate = document.querySelector('input[name="drawingUpdate"]:checked')?.value;
+    existingNCR.disposition = document.getElementById("disposition").value;
+    existingNCR.revNumber = document.getElementById("revNumber")?.value;
+    existingNCR.newRevNumber = document.getElementById("newRevNumber").value;
+    existingNCR.revDate = document.getElementById("revDate").value;
+    existingNCR.E_date = document.getElementById("repDate").value;
+    existingNCR.E_name = document.getElementById("repName").value;
+    existingNCR.dept = "Engineering";
+    existingNCR.status = "EngineerFilled";  
+
+    reports[ncrId] = existingNCR;
     localStorage.setItem("reports", JSON.stringify(reports));
 
     window.location.href = `details.html?id=${ncrId}`;
@@ -54,17 +54,16 @@ function ValidateData() {
     if (!CF_Engineering) {
         valid = false;
         messages.push("Please select an option from CF Engineering");
-        CF_Engineering.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        document.getElementById("disposition").scrollIntoView({behavior:"smooth", block:"center"});
         
     }
 
-    //change condition and min and max length to test
     const disposition = document.getElementById("disposition").value.trim();
-    if (disposition.length < 5 && document.querySelector('input[name="CF_Engineering"]:checked')?.value === "Repair" ||
-    document.querySelector('input[name="CF_Engineering"]:checked')?.value === "Rework") {
+    if (disposition.length < 5 && (document.querySelector('input[name="CF_Engineering"]:checked')?.value === "Repair" ||
+    document.querySelector('input[name="CF_Engineering"]:checked')?.value === "Rework")) {
         valid = false;
         messages.push("Disposition must be at least 5 characters");
-        disposition.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        document.getElementById("disposition").scrollIntoView({behavior:"smooth", block:"center"});
     }
 
     const repName = document.getElementById("repName").value.trim();
@@ -72,12 +71,12 @@ function ValidateData() {
     if (repName.length < 3) {
         valid = false;
         messages.push("Representative Name must be at least 3 characters");
-        repName.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        document.getElementById("repName").scrollIntoView({behavior:"smooth", block:"center"});
     }
     if (!repDate) {
         valid = false;
         messages.push("Please select a Representative Date");
-        repDate.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        document.getElementById("repDate").scrollIntoView({behavior:"smooth", block:"center"});
     }
 
     if (!valid) {
@@ -101,7 +100,7 @@ function sendEmail()
       alert("Please enter an email address!");
       return;
     }
-    alert("Email has been sent to the engineer: " + email);
+    alert("Email has been sent to the Operation: " + email);
     closePopup();
     saveFormData();
 }
@@ -111,90 +110,11 @@ function SaveWithDataValid()
     if (!ValidateData()) return;
 
     openPopup();
-}
+} 
 
 function hasNumber(str) {
         return /\d/.test(str);
-    }
-
-const CF_EngineeringRadios = document.getElementsByName('CF_Engineering');
-const CF_EngineeringError = document.getElementById('CF_EngineeringError');
-
-CF_EngineeringRadios.forEach(radio => {
-    radio.addEventListener("change", () => {
-        const checked = Array.from(CF_EngineeringRadios).some(r => r.checked);
-        if (!checked) {
-            CF_EngineeringError.innerText = "Please select an option";
-        } else if(document.querySelector('input[name="CF_Engineering"]:checked')?.value === "Repair" ||
-    document.querySelector('input[name="CF_Engineering"]:checked')?.value === "Rework") {
-            document.getElementById('disposition').readOnly = false;
-        }else {
-            CF_EngineeringError.innerText = "";
-            document.getElementById('disposition').readOnly = true;
-            document.getElementById('disposition').style.backgroundColor = "#ffffffff";
-            document.getElementById('dispositionError').innerText = "";
-        }
-    });    
-});
-
-document.getElementById('disposition').addEventListener("input", (e) => {
-    if(e.target.value.length === 0 && document.querySelector('input[name="CF_Engineering"]:checked')?.value === "Repair" ||
-    document.querySelector('input[name="CF_Engineering"]:checked')?.value === "Rework") {
-            document.getElementById('dispositionError').innerText = "Disposition is required";
-            document.getElementById('disposition').style.backgroundColor = "#ffdddd";
-    }
-    else if(e.target.value.length < 5) {
-            document.getElementById('dispositionError').innerText = "Disposition must be at at least 5 characters long";
-            document.getElementById('disposition').style.backgroundColor = "#ffdddd";
-    } else {
-            document.getElementById('disposition').style.backgroundColor = "#ffffffff";
-            document.getElementById('dispositionError').innerText = "";
-        }
-});
-//edit rev number conditions
-document.getElementById('revNumber').addEventListener("input", (event) => {
-    if(event.target.value.includes(" ")) {
-        document.getElementById('revNumberError').innerText = "Revision Number must remove any spaces";
-        document.getElementById('revNumber').style.backgroundColor = "#ffdddd";
-    }  else if(Number.isInteger(parseInt(event.target.value))) {
-        document.getElementById('revNumberError').innerText = "Revision Number must include numbers";
-        document.getElementById('revNumber').style.backgroundColor = "#ffdddd";
-    } else {
-        document.getElementById('revNumber').style.backgroundColor = "#ffffffff";
-        document.getElementById('revNumberError').innerText = "";
-    }
-
-});
-
-//edit new rev number conditions
-document.getElementById('newRevNumber').addEventListener("input", (event) => {
-    if(event.target.value.includes(" ")) {
-        document.getElementById('newRevNumberError').innerText = "Revision Number must remove any spaces";
-        document.getElementById('newRevNumber').style.backgroundColor = "#ffdddd";
-    }  else if(Number.isInteger(event.target.value)) {
-        document.getElementById('newRevNumberError').innerText = "Revision Number must include numbers";
-        document.getElementById('newRevNumber').style.backgroundColor = "#ffdddd";
-    } else {
-        document.getElementById('newRevNumber').style.backgroundColor = "#ffffffff";
-        document.getElementById('newRevNumberError').innerText = "";
-    }
-
-});
-
-document.getElementById('revDate').addEventListener("input", (e) => {
-    const input = e.target;
-    const error = document.getElementById('revDateError');
-    const selectedDate = new Date(input.value);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0); 
-    
-    if (selectedDate > today) {
-        error.innerText = "Date cannot be in the future";
-        input.style.backgroundColor = "#ffdddd";
-    } else {
-        error.innerText = "";
-        input.style.backgroundColor = "#ffffffff";
-    }
+}
 
 document.getElementById('repName').addEventListener("input", (e) => {
     if(e.target.value === "") {
@@ -228,5 +148,98 @@ document.getElementById('repDate').addEventListener("input", (e) => {
     }
 });
 
+const CF_EngineeringRadios = document.getElementsByName('CF_Engineering');
+CF_EngineeringRadios.forEach(radio => {
+    radio.addEventListener("change", () => {
+        const checked = Array.from(CF_EngineeringRadios).some(r => r.checked);
 
+        if (!checked) {
+            CF_EngineeringError.innerText = "Please select an option";
+        } 
+        else if(document.querySelector('input[name="CF_Engineering"]:checked')?.value === "Repair" ||
+    document.querySelector('input[name="CF_Engineering"]:checked')?.value === "Rework") {
+            disposition.readOnly = false;
+            disposition.style.backgroundColor = "#ffffff"; 
+            disposition.style.color = "#000000";
+            disposition.style.cursor = "text";
+            disposition.placeholder = "Enter steps required";
+        }
+        else {
+            disposition.readOnly = true;
+            disposition.style.backgroundColor = "#e0e0e0"; 
+            disposition.style.color = "#666666"; 
+            disposition.style.cursor = "not-allowed";
+            disposition.placeholder = "Not required for this option";
+            disposition.value = ""; 
+            document.getElementById('dispositionError').innerText = "";
+        }
+    });    
+});
+
+document.getElementById('revNumber').addEventListener("input", (event) => {
+    const value = event.target.value;
+    const error = document.getElementById('revNumberError');
+
+    if (value.includes(" ")) {
+        error.innerText = "Revision Number must not contain spaces";
+        event.target.style.backgroundColor = "#ffdddd";
+    } else if (!/\d/.test(value)) {
+        error.innerText = "Revision Number must contain at least one number";
+        event.target.style.backgroundColor = "#ffdddd";
+    } else {
+        error.innerText = "";
+        event.target.style.backgroundColor = "#ffffff";
+    }
+});
+
+
+document.getElementById('newRevNumber').addEventListener("input", (event) => {
+    const value = event.target.value;
+    const error = document.getElementById('newRevNumberError');
+
+    if (value.includes(" ")) {
+        error.innerText = "New Revision Number must not contain spaces";
+        event.target.style.backgroundColor = "#ffdddd";
+    } else if (!/\d/.test(value)) {
+        error.innerText = "New Revision Number must contain at least one number";
+        event.target.style.backgroundColor = "#ffdddd";
+    } else {
+        error.innerText = "";
+        event.target.style.backgroundColor = "#ffffff";
+    }
+});
+
+
+document.getElementById('revDate').addEventListener("input", (e) => {
+    const input = e.target;
+    const error = document.getElementById('revDateError');
+    const selectedDate = new Date(input.value);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); 
+
+    if (!input.value) {
+        error.innerText = "Date is required";
+        input.style.backgroundColor = "#ffdddd";
+    } else if (selectedDate > today) {
+        error.innerText = "Date cannot be in the future";
+        input.style.backgroundColor = "#ffdddd";
+    } else {
+        error.innerText = "";
+        input.style.backgroundColor = "#ffffffff";
+    }
+});
+
+document.getElementById('disposition').addEventListener("input", (e) => {
+    if(e.target.value.length === 0 && document.querySelector('input[name="CF_Engineering"]:checked')?.value === "Repair" ||
+    document.querySelector('input[name="CF_Engineering"]:checked')?.value === "Rework") {
+            document.getElementById('dispositionError').innerText = "Disposition is required";
+            document.getElementById('disposition').style.backgroundColor = "#ffdddd";
+    }
+    else if(e.target.value.length < 5) {
+            document.getElementById('dispositionError').innerText = "Disposition must be at at least 5 characters long";
+            document.getElementById('disposition').style.backgroundColor = "#ffdddd";
+    } else {
+            document.getElementById('disposition').style.backgroundColor = "#ffffffff";
+            document.getElementById('dispositionError').innerText = "";
+        }
 });
