@@ -37,8 +37,79 @@ function populateForm(report, id) {
     });
 }
 
-document.querySelector("form").addEventListener("submit", function(event){
-    event.preventDefault(); 
+
+function ValidateData() {
+    let valid = true;
+    let messages = [];
+
+    const productId = document.getElementById("productId").value.trim();
+    if (!/^PR\d{8}$/.test(productId)) {
+        valid = false;
+        messages.push("Product ID must be in format PR########");
+    }
+
+    const orderId = document.getElementById("orderId").value.trim();
+    if (!/^OR\d{8}$/.test(orderId)) {
+        valid = false;
+        messages.push("Order ID must be in format OR########");
+    }
+
+    const supplier = document.getElementById("supplier").value.trim();
+    if (supplier.length < 3) {
+        valid = false;
+        messages.push("Supplier name must be at least 3 characters");
+    }
+
+    const desItem = document.getElementById("desItem").value.trim();
+    if (desItem.length < 3) {
+        valid = false;
+        messages.push("Description of item must be at least 3 characters");
+    }
+
+    const quaReceived = parseInt(document.getElementById("quaReceived").value);
+    if (quaReceived < 0) {
+        valid = false;
+        messages.push("Quantity Received must be a number > 0");
+    }
+
+    const quaDefect = parseInt(document.getElementById("quaDefect").value);
+    if (quaDefect < 0 || quaDefect > quaReceived) {
+        valid = false;
+        messages.push("Quantity Defect must be a number >= 0 and <= Quantity Received");
+    }
+
+    const nonConforming = document.querySelector('input[name="nonConforming"]:checked');
+    if (!nonConforming) {
+        valid = false;
+        messages.push("Please select if item is non-conforming");
+    }
+
+    const process = document.querySelectorAll('input[name="process"]:checked');
+    if (process.length === 0) {
+        valid = false;
+        messages.push("Please select at least one process");
+    }
+
+    const repName = document.getElementById("repName").value.trim();
+    const repDate = document.getElementById("repDate").value;
+    if (repName.length < 3) {
+        valid = false;
+        messages.push("Representative Name must be at least 3 characters");
+    }
+    if (!repDate) {
+        valid = false;
+        messages.push("Please select a Representative Date");
+    }
+
+    if (!valid) {
+        alert(messages.join("\n"));
+    }
+    return valid;
+}
+
+function SaveWithDataValid() 
+{
+    if (!ValidateData()) return;
 
     const process = Array.from(document.querySelectorAll('input[name="process"]:checked'))
                          .map(cb => cb.parentNode.textContent.trim())
@@ -64,14 +135,15 @@ document.querySelector("form").addEventListener("submit", function(event){
         quaDefect: document.getElementById("quaDefect").value,
         nonConforming: nonConforming,
         dept: "Quality",
-        status:"PendingEngineer"
+        state:"PendingEngineer",
+        depClosed: "No"
     };
 
     localStorage.setItem("reports", JSON.stringify(reports));
-
-    // Chuyển về details
     window.location.href = `details.html?id=${reportId}`;
-});
+
+
+}
 
 function confirmCancel() {
     const userconfirm = confirm("Are you sure you want to cancel?, Any changes will not be saved.");
@@ -90,7 +162,7 @@ document.getElementById('productId').addEventListener("input", (event) => {
     } else if(event.target.value.includes(" ")) {
         document.getElementById('productError').innerText = "Product ID must remove any spaces";
         document.getElementById('productId').style.backgroundColor = "#ffdddd";
-    }  else if(event.target.value.length < 10) {
+    }  else if(event.target.value.length != 10) {
         document.getElementById('productError').innerText = "Product ID must include 8 numbers";
         document.getElementById('productId').style.backgroundColor = "#ffdddd";
         for(let i = 2; i < event.target.value.length; i++) { //check each character after "PR" except the first two and 9th character
@@ -128,7 +200,7 @@ document.getElementById('orderId').addEventListener("input", (event) => {
                     return;
                 }
             }
-        }
+        } 
         else {
             document.getElementById('orderId').style.backgroundColor = "#ffffffff";
             document.getElementById('orderError').innerText = "";
@@ -265,4 +337,18 @@ document.getElementById('repDate').addEventListener("input", (e) => {
         error.innerText = "";
         input.style.backgroundColor = "#ffffffff";
     }
+});
+
+const nonConformingRadios = document.getElementsByName('nonConforming');
+const nonConformingError = document.getElementById('nonConformingError');
+
+nonConformingRadios.forEach(radio => {
+    radio.addEventListener("change", () => {
+        const checked = Array.from(nonConformingRadios).some(r => r.checked);
+        if (!checked) {
+            nonConformingError.innerText = "Please select Yes or No";
+        } else {
+            nonConformingError.innerText = "";
+        }
+    });
 });

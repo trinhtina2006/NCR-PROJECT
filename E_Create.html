@@ -44,7 +44,34 @@
             </div>
         </header>
 
-         <form onsubmit="event.preventDefault(); window.location.href='details.html';">
+        <!--QUALITY INFO-->
+        <div id="qualitySummary" class="qualitySummary">
+            <div class="qualityHeader" id="qualityHeader">
+                <h3>Quality Inspector Summary</h3>
+                <span class="arrow">&#9662;</span>
+            </div>
+
+            <div id="qualityContent" class="qualityContent">
+                <div class="two-cols">
+                    <p>Product ID:&nbsp;&nbsp;<span id="pr_id"></span></p>
+                    <p>Order ID:&nbsp;&nbsp;<span id="or_id"></span></p>
+                </div>
+                <div class="two-cols">
+                    <p>Process:&nbsp;&nbsp;<span id="process"></span></p>
+                    <p>Supplier:&nbsp;&nbsp;<span id="supplier"></span></p>
+                </div>
+                <div class="two-cols">
+                    <p>Description Item:&nbsp;&nbsp;<span id="des_item"></span></p>
+                    <p>Description Defect:&nbsp;&nbsp;<span id="des_defect"></span></p>
+                </div>
+                <div class="two-cols">
+                    <p>Quantity Received:&nbsp;&nbsp;<span id="qua_received"></span></p>
+                    <p>Quantity Defective:&nbsp;&nbsp;<span id="qua_defect"></span></p>
+                </div>
+            </div>
+        </div>
+
+        <form onsubmit="event.preventDefault(); window.location.href='details.html';">
             <div class="form-container">
                 <fieldset class="form-group">
                     <legend>Engineering Review</legend>
@@ -61,6 +88,12 @@
                         <label>Customer require notification? :</label> 
                         <label><input type="radio" name="customerNotification" value="Yes"  /> YES</label>
                         <label><input type="radio" name="customerNotification" value="No"  /> NO</label> 
+                    </div>
+
+                    <div id="customerNotificationDiv" >
+                        <label>Notification Details:
+                            <textarea id="customerNotificationText" placeholder="Enter details for customer notification"></textarea>
+                        </label>
                     </div>
                 </fieldset>
 
@@ -80,16 +113,20 @@
                         <label><input type="radio" name="drawingUpdate" value="No"  /> NO</label> 
                     </div>
 
-                    <label>Original Rev. Number:
-                        <input type="text" id="revNumber" placeholder="eg. 123 or A1" />
-                    </label>
-                    <span style="color: red;" id="revNumberError"></span>
+                    <div class="two-cols">
+                        <label>Original Rev. Number:
+                            <input type="text" id="revNumber" placeholder="eg. 123 or A1" />
+                        </label>
 
-                    <label>Updated Rev. Number:
-                        <input type="text" id="newRevNumber" placeholder="eg. 123 or A1" />
-                    </label>
-                    <span style="color: red;" id="newRevNumberError"></span>
+                        <label>Updated Rev. Number:
+                            <input type="text" id="newRevNumber" placeholder="eg. 123 or A1" />
+                        </label>
+                    </div>
 
+                    <div class="two-cols">
+                        <span style="color: red;" id="revNumberError"></span>
+                        <span style="color: red;" id="newRevNumberError"></span>
+                    </div>
 
                     <label>Revision Date: 
                         <input type="date" id="revDate" name="revDate"  />
@@ -108,9 +145,11 @@
                     <span style="color: red;" id="repNameError"></span>
                     <span style="color: red;" id="repDateError"></span>
                 </fieldset>
+                <span class="hint"><span class="required-asterisk">*</span> is required only when completing the form</span>
 
                 <div class="form-btn">
-                    <button type="button" class="save-btn" onclick="SaveWithDataValid()">SAVE</button>
+                    <button type="button" class="draft-btn" onclick="saveDraft()">SAVE DRAFT</button>
+                    <button type="button" class="save-btn" onclick="SaveWithDataValid()">COMPLETE</button>
                     <button type="button" class="cancel-btn" onclick="confirmCancel()">CANCEL</button>
                 </div>            
             </div>

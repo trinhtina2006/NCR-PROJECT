@@ -32,28 +32,39 @@ function displayReport(report, id) {
     document.getElementById('ncrDate').innerText = report.date;
     document.getElementById('name').innerText = report.name;
     document.getElementById('ncrId').innerText = id;
-
+    
     const engineerSection = document.getElementById("engineeringInfo");
-    if (report.status === "EngineerFilled") {
+    if (report.state === "EngineerFilled") {
+        
+        const customerNotifText = report.customerNotification === "Yes" 
+            ? (report.customerNotificationDetails || "") 
+            : "No";
+
         engineerSection.innerHTML = `
             <h2>Section 3: Engineering Details</h2>
             <div class="card">
                 <h3>Review</h3>
-                <p>CF Engineering:<span>${report.CF_Engineering || "N/A"}</span></p>
-                <p>Customer Notification:<span>${report.customerNotification || "N/A"}</span></p>
+                <p>CF Engineering:&nbsp;&nbsp;&nbsp;&nbsp;<span>${report.CF_Engineering || "N/A"}</span></p>
+                <p>Customer Notification:&nbsp;&nbsp;&nbsp;&nbsp;<span>${customerNotifText || "N/A"}</span></p>
             </div>
             <div class="card-big">
                 <h3>Revision</h3>
-                <p>Disposition:<span>${report.disposition || "N/A"}</span></p>
-                <p>Drawing Update:<span>${report.drawingUpdate || "N/A"}</span></p>
-                <p>Revision Number:<span>${report.revNumber || "N/A"}</span></p>
-                <p>New Revision Number:<span>${report.newRevNumber || "N/A"}</span></p>
-                <p>Revision Date:<span>${report.revDate || "N/A"}</span></p>
+                <div class="two-cols">
+                    <p>Disposition:&nbsp;&nbsp;&nbsp;&nbsp;<span>${report.disposition || "N/A"}</span></p>
+                    <p>Drawing Update:&nbsp;&nbsp;&nbsp;&nbsp;<span>${report.drawingUpdate || "N/A"}</span></p>
+                </div>
+                <div class="two-cols">
+                    <p>Revision Number:&nbsp;&nbsp;&nbsp;&nbsp;<span>${report.revNumber || "N/A"}</span></p>
+                    <p>New Revision Number:&nbsp;&nbsp;&nbsp;&nbsp;<span>${report.newRevNumber || "N/A"}</span></p>
+                </div>
+                <p>Revision Date:&nbsp;&nbsp;&nbsp;&nbsp;<span>${report.revDate || "N/A"}</span></p>
             </div>
             <div class="card">
                 <h3>Representative</h3>
-                <p>Engineer Name:<span>${report.E_name || "N/A"}</span></p>
-                <p>Engineer Date:<span>${report.E_date || "N/A"}</span></p>
+                <div class="two-cols">
+                    <p>Engineer Name:&nbsp;&nbsp;&nbsp;&nbsp;<span>${report.E_name || "N/A"}</span></p>
+                    <p>Engineer Date:&nbsp;&nbsp;&nbsp;&nbsp;<span>${report.E_date || "N/A"}</span></p>
+                </div>
             </div>
 
 

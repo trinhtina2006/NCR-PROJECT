@@ -41,14 +41,15 @@ function saveFormData() {
             quaDefect: document.getElementById("quaDefect").value,
             dept: "Quality",
             nonConforming: nonConforming,
-            status:"PendingEngineer"
+            state:"PendingEngineer",
+            depClosed: "No"
         };
 
     let reports = JSON.parse(localStorage.getItem("reports")) || {};
     reports[ncrId] = ncr;   
     localStorage.setItem("reports", JSON.stringify(reports));
 
-    window.location.href = `details.html?id=${ncrId}`;
+    window.location.href = "homepage.html";
     })
     .catch(err => console.error("Cannot load reports.json:", err));
 }
@@ -371,9 +372,7 @@ function saveDraft() {
         quaReceived: document.getElementById("quaReceived").value,
         quaDefect: document.getElementById("quaDefect").value,
         nonConforming: getRadioValue("nonConforming"),
-        date: document.getElementById("repDate").value,
-        name: document.getElementById("repName").value,
-        isDraft: "Draft",
+        isDraft: true,
         dept:"Quality"
     };
 

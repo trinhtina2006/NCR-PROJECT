@@ -9,7 +9,7 @@ main {
     margin-bottom: 15px;
 }
 
-#wrapper { padding: 15px 90px;}
+#wrapper { padding: 15px 70px;}
 
 p, li, i, label { 
     text-align: justify;
@@ -104,7 +104,8 @@ p, li, i, label {
 
 .list-item {
     display: grid;
-    grid-template-columns: 1.3fr 2.1fr 1.5fr 1.6fr 0.8fr 2.6fr;    justify-content: space-between;
+    grid-template-columns: 1fr 1.5fr 1.2fr 1.3fr 0.7fr 2.8fr;    
+    justify-content: space-between;
     align-items: center;
     padding: 15px;
     border-radius: 10px;
@@ -152,6 +153,12 @@ p, li, i, label {
 .fill-btn{
     padding: 7px 15px;
     background: #4A7856;
+    color: #fff;
+    font-weight:bold;
+}
+.close-btn{
+    padding: 7px 10px;
+    background: #4B3621;
     color: #fff;
     font-weight:bold;
 }
@@ -226,6 +233,7 @@ textarea
     font-size: 1rem;
 }
 
+
 .form-group-2 {
     display: grid;
     grid-template-columns: 0.3fr auto 1fr; 
@@ -240,6 +248,7 @@ textarea
 .form-group-2 #supplier {width: 30%;}
 .form-group-2 #desItem, .form-group-2 textarea{ width: 85%;}
 #quaDefect, #quaReceived {width: 15%; margin-left: 30px;}
+.form-group textarea {width: 70%;}
 
 .save-btn, .cancel-btn, .back-btn, .print-btn, .draft-btn {
     background-color: #173451;  
@@ -267,7 +276,7 @@ textarea
 /*DETAILS*/
 .ncr-container {
     padding: 15px ;
-    max-width: 850px;
+    max-width: 950px;
     margin: 0 auto;
 }
 
@@ -304,15 +313,17 @@ h1 {
 }
 
 .card p {
-    display: grid;
-    grid-template-columns: 0.8fr 2fr; 
     margin: 10px 0 0px 0;
 }
 
 .card-big p {
-    display: grid;
-    grid-template-columns: 1.5fr 2fr; 
     margin: 8px 0 2px 0;
+}
+
+.card-three-cols 
+{
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr 1fr;
 }
 /*footer*/
 footer {
@@ -513,9 +524,9 @@ footer {
     }
     .ncr-container {
         width: 90%;
-        max-width: 700px;
+        max-width: 850px;
         margin: 0 auto;
-        padding: 30px;
+        padding: 20px;
         box-shadow: none;
         border: none;
     }
@@ -542,9 +553,9 @@ footer {
 
     .card, .card-big {
         border: 1px solid black;
-        padding: 5px 15px 10px 30px;
+        padding: 5px 10px 10px 30px;
         margin-top: 8px;
-        font-size: 16px;
+        font-size: 15px;
         page-break-inside: avoid;
     }
 
@@ -558,4 +569,56 @@ footer {
         background: transparent;
         color: black !important;
     }
+}
+
+/*E-CREATE*/
+#customerNotificationDiv {
+    display: none;
+}
+
+/*Quality Info*/
+.qualitySummary {
+    border: 1px solid grey;    
+    background: #fafafa;
+    max-width: 84%;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    margin: 20px auto;
+    color: #173451;
+}
+
+
+.qualityContent {
+    display: none;
+}
+
+.qualityHeader {
+    display: flex;
+    user-select: none;
+    justify-content: space-between;
+    padding: 12px 25px;
+    background: #E9E7E7;
+    cursor: pointer;
+}
+
+.qualityHeader:hover {
+    background: #CECECE;
+}
+
+.qualityHeader h3 {
+    margin: 0;
+    font-size: 19px;
+}
+
+.qualityContent {
+    padding: 15px 50px;
+    display: none;
+}
+
+.qualityContent p {
+    margin: 4px 0;
+}
+
+.arrow.open {
+    transform: rotate(180deg);
 }

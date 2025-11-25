@@ -4,6 +4,7 @@ const ncrId = params.get('id');
 
 const reportsLocal = JSON.parse(localStorage.getItem("reports")) || {};
 const ncr = reportsLocal[ncrId];
+loadQualitySummary(ncr);
 
 document.getElementById('ncrId').innerText = ncrId;
 document.getElementById('ncrDateTime').innerText = date.toLocaleString();
@@ -11,6 +12,7 @@ document.getElementById('ncrDateTime').innerText = date.toLocaleString();
 const today = new Date();
 const dateStr = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
 document.getElementById("repDate").value = dateStr;
+document.getElementById("revDate").value=dateStr;
 
 function confirmCancel() {
     const userconfirm = confirm("Are you sure you want to cancel?, Any changes will not be saved.");
@@ -28,6 +30,10 @@ function saveFormData() {
 
     existingNCR.CF_Engineering = document.querySelector('input[name="CF_Engineering"]:checked')?.value;
     existingNCR.customerNotification = document.querySelector('input[name="customerNotification"]:checked')?.value;
+    if (existingNCR.customerNotification === "Yes") {
+        existingNCR.customerNotificationDetails = document.getElementById("customerNotificationText").value;
+    } else {
+        existingNCR.customerNotificationDetails = null;}
     existingNCR.drawingUpdate = document.querySelector('input[name="drawingUpdate"]:checked')?.value;
     existingNCR.disposition = document.getElementById("disposition").value;
     existingNCR.revNumber = document.getElementById("revNumber")?.value;
@@ -36,7 +42,7 @@ function saveFormData() {
     existingNCR.E_date = document.getElementById("repDate").value;
     existingNCR.E_name = document.getElementById("repName").value;
     existingNCR.dept = "Engineering";
-    existingNCR.status = "EngineerFilled";  
+    existingNCR.state = "EngineerFilled";  
 
     reports[ncrId] = existingNCR;
     localStorage.setItem("reports", JSON.stringify(reports));
@@ -243,3 +249,66 @@ document.getElementById('disposition').addEventListener("input", (e) => {
             document.getElementById('dispositionError').innerText = "";
         }
 });
+
+/*CUSTOMER NOTI */
+const customerRadios = document.getElementsByName("customerNotification");
+const customerDiv = document.getElementById("customerNotificationDiv");
+
+customerRadios.forEach(radio => {
+    radio.addEventListener("change", () => {
+        if (radio.value === "Yes" && radio.checked) {
+            customerDiv.style.display = "block";
+        } else if (radio.value === "No" && radio.checked) {
+            customerDiv.style.display = "none";
+            document.getElementById("customerNotificationText").value = ""; 
+        }
+    });
+});
+
+function saveDraft() {
+    let reports = JSON.parse(localStorage.getItem("reports")) || {};
+
+    reports[ncrId] = {
+        ...reports[ncrId],  
+        CF_Engineering: document.querySelector('input[name="CF_Engineering"]:checked')?.value || "",
+        customerNotification: document.querySelector('input[name="customerNotification"]:checked')?.value || "",
+        customerNotificationDetails: document.getElementById("customerNotificationText").value || "",
+        drawingUpdate: document.querySelector('input[name="drawingUpdate"]:checked')?.value || "",
+        disposition: document.getElementById("disposition").value || "",
+        revNumber: document.getElementById("revNumber").value || "",
+        newRevNumber: document.getElementById("newRevNumber").value || "",
+        revDate: document.getElementById("revDate").value || "",
+        E_date: document.getElementById("repDate").value || "",
+        E_name: document.getElementById("repName").value || "",
+        isDraft:true
+    };
+    localStorage.setItem("reports", JSON.stringify(reports));
+
+    alert("Draft saved successfully!");
+    window.location.href = "homepage.html";
+}
+
+function loadQualitySummary(report) {
+    document.getElementById("pr_id").textContent = report.productId || "";
+    document.getElementById("or_id").textContent = report.orderId || "";
+    document.getElementById("process").textContent = report.process || "";
+    document.getElementById("supplier").textContent = report.supplier || "";
+    document.getElementById("des_item").textContent = report.desItem || "";
+    document.getElementById("des_defect").textContent = report.desDefect || "";
+    document.getElementById("qua_received").textContent = report.quaReceived || "";
+    document.getElementById("qua_defect").textContent = report.quaDefect || "";
+}
+
+document.getElementById("qualityHeader").addEventListener("click", () => {
+    const content = document.getElementById("qualityContent");
+    const arrow = document.querySelector("#qualityHeader .arrow");
+
+    if (content.style.display === "block") {
+        content.style.display = "none";
+        arrow.classList.remove("open");
+    } else {
+        content.style.display = "block";
+        arrow.classList.add("open");
+    }
+});
+

@@ -108,16 +108,48 @@ function renderList(reports) {
             <span class="list-actions">
             ${
                 status === "Closed"
-                    ? `<button class="action-btn details-btn" onclick="location.href='details.html?id=${r.id}'">Details</button>
-                       <button class="action-btn delete-btn" onclick="deleteReport('${r.id}')">Delete</button>`
-                    : status === "Draft"
-                    ? `<button class="action-btn edit-btn" onclick="location.href='edit.html?id=${r.id}'">Resume</button>
-                       <button class="action-btn delete-btn" onclick="deleteReport('${r.id}')">Delete</button>`
-                    : `<button class="action-btn edit-btn" onclick="location.href='edit.html?id=${r.id}'">Edit</button>
-                       <button class="action-btn details-btn" onclick="location.href='details.html?id=${r.id}'">Details</button>
-                       <button class="action-btn delete-btn" onclick="deleteReport('${r.id}')">Delete</button>`
+                    ? `
+                        <button class="action-btn details-btn" onclick="location.href='details.html?id=${r.id}'">
+                            <i class="bi bi-eye"></i> Details
+                        </button>
+                        <button class="action-btn delete-btn" onclick="deleteReport('${r.id}')">
+                            <i class="bi bi-trash"></i> Delete
+                        </button>
+                    `
+                    : status === "Draft" && r.dept=="Quality"
+                    ? `
+                        <button class="action-btn edit-btn" onclick="location.href='edit.html?id=${r.id}'">
+                            <i class="bi bi-pencil-square"></i> Resume
+                        </button>
+                        <button class="action-btn delete-btn" onclick="deleteReport('${r.id}')">
+                            <i class="bi bi-trash"></i> Delete
+                        </button>
+                    `
+                    : r.state === "EngineerFilled"
+                    ? `
+                        <button class="action-btn edit-btn" onclick="location.href='E_Edit.html?id=${r.id}'">
+                            <i class="bi bi-pencil-square"></i> Edit
+                        </button>
+                        <button class="action-btn details-btn" onclick="location.href='details.html?id=${r.id}'">
+                            <i class="bi bi-eye"></i> Details
+                        </button>
+                        <button class="action-btn delete-btn" onclick="deleteReport('${r.id}')">
+                            <i class="bi bi-trash"></i> Delete
+                        </button>
+                    `
+                    : `
+                        <button class="action-btn edit-btn" onclick="location.href='edit.html?id=${r.id}'">
+                            <i class="bi bi-pencil-square"></i> Edit
+                        </button>
+                        <button class="action-btn details-btn" onclick="location.href='details.html?id=${r.id}'">
+                            <i class="bi bi-eye"></i> Details
+                        </button>
+                        <button class="action-btn delete-btn" onclick="deleteReport('${r.id}')">
+                            <i class="bi bi-trash"></i> Delete
+                        </button>
+                    `
             }
-        </span>
+            </span>
         </div>`;
     }
 
@@ -158,7 +190,7 @@ function deleteReport(id) {
 /* ENGINEER LIST */
 function renderEngineerList() {
     const reports = JSON.parse(localStorage.getItem("reports")) || {};
-    const pendingNCRs = Object.entries(reports).filter(([id, ncr]) => ncr.status === "PendingEngineer");
+    const pendingNCRs = Object.entries(reports).filter(([id, ncr]) => ncr.state === "PendingEngineer");
     const container = document.getElementById("engineerNCR");
     container.innerHTML = "";
 
@@ -166,17 +198,27 @@ function renderEngineerList() {
         container.innerHTML = "<p>No pending NCRs</p>";
     } else {
         pendingNCRs.forEach(([id, ncr]) => {
+            const status = ncr.isDraft ? "Draft" : (ncr.depClosed === "Yes" ? "Closed" : "Active");
+            const fillLabel = ncr.isDraft ? "Resume" : "Fill In";
+            const fillLink = ncr.isDraft ? `E_Edit.html?id=${id}` : `E_Create.html?id=${id}`;
+
             container.innerHTML += `
             <div class="list-item">
                 <span class="list-id">${id}</span>
-                <span class="list-supply">${r.supplier}</span>
+                <span class="list-supply">${ncr.supplier}</span>
                 <span class="list-name">${ncr.dept}</span>
                 <span class="list-time">${new Date(ncr.date).toLocaleDateString()}</span>
-                <span class="list-status"></span>
+                <span class="list-status">${status}</span>
                 <span class="list-actions">
-                    <button class="action-btn fill-btn" onclick="location.href='E_create.html?id=${id}'">Fill In</button>
-                    <button class="action-btn edit-btn" onclick="location.href='edit.html?id=${id}'">Edit</button>
-                    <button class="action-btn details-btn" onclick="location.href='details.html?id=${id}'">Details</button>
+                    <button class="action-btn fill-btn" onclick="location.href='${fillLink}'">
+                        <i class="bi bi-journal-text"></i> ${fillLabel}
+                    </button>
+                    <button class="action-btn details-btn" onclick="location.href='details.html?id=${id}'">
+                        <i class="bi bi-eye"></i> Details
+                    </button>
+                    <button class="action-btn close-btn" onclick="closeNCR('${id}')">
+                        <i class="bi bi-x-lg"></i> Close
+                    </button>
                 </span>
             </div
             `;
@@ -184,5 +226,25 @@ function renderEngineerList() {
     }
 }
 
+function closeNCR(id) {
+    if (!confirm("Are you sure you want to close this NCR?")) return;
+
+    const reports = JSON.parse(localStorage.getItem("reports")) || {};
+    if (reports[id]) {
+        reports[id].status = "Closed";
+        reports[id].state = "";
+        reports[id].depClosed = "Yes"; 
+        localStorage.setItem("reports", JSON.stringify(reports));
+        alert("NCR closed successfully!");
+
+        if (allReports[id]) {
+            allReports[id].status = "Closed";
+            allReports[id].depClosed = "Yes";
+        }
+
+        renderEngineerList(); 
+        renderList(allReports);
+    }
+}
 
 renderEngineerList();
