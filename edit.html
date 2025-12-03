@@ -19,6 +19,19 @@
             </ul>
         </nav>
 
+        <!-- POPUP -->
+        <div id="emailPopup" class="popup-email">
+            <div class="popup-content">
+                <h3>Send NCR to Engineer</h3>
+                <p>Please enter the engineer's email:</p>
+                <input type="email" id="nextEmail" placeholder="example@gmail.com" required>
+                <div class="popup-buttons">
+                    <button class="popup-send" onclick="sendEmail()">SEND</button>
+                    <button class="popup-cancel" onclick="closePopup()">CANCEL</button>
+                </div>
+            </div>
+        </div>
+        
         <header class="header">
             <h1>Edit NCR</h1>
             <p>Please update details and click "Save" to apply changes.</p>

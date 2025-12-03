@@ -15,6 +15,38 @@ if (reportId && reportsLocal[reportId]) {
       });
 }
 
+function openPopup() {
+    document.getElementById("emailPopup").style.display = "flex";
+}
+
+function closePopup() {
+    document.getElementById("emailPopup").style.display = "none";
+}
+
+function sendEmail() {
+    const params = new URLSearchParams(window.location.search);
+    const reportId = params.get('id');
+
+    let reports = JSON.parse(localStorage.getItem("reports")) || {};
+    const email = document.getElementById("nextEmail").value.trim();
+
+    if (!email) {
+        alert("Please enter an email!");
+        return;
+    }
+
+    if (reports[reportId]) {
+        reports[reportId].nextEmail = email;
+        localStorage.setItem("reports", JSON.stringify(reports));
+    }
+
+    alert("Email has been sent to: " + email);
+    closePopup();
+
+    window.location.href = `details.html?id=${reportId}`;
+}
+
+
 function populateForm(report, id) {
     document.getElementById("ncrId").innerText =id;
     document.getElementById("ncrDateTime").innerText =report.date;
@@ -140,8 +172,7 @@ function SaveWithDataValid()
     };
 
     localStorage.setItem("reports", JSON.stringify(reports));
-    window.location.href = `details.html?id=${reportId}`;
-
+    openPopup();
 
 }
 
@@ -165,7 +196,7 @@ document.getElementById('productId').addEventListener("input", (event) => {
     }  else if(event.target.value.length != 10) {
         document.getElementById('productError').innerText = "Product ID must include 8 numbers";
         document.getElementById('productId').style.backgroundColor = "#ffdddd";
-        for(let i = 2; i < event.target.value.length; i++) { //check each character after "PR" except the first two and 9th character
+        for(let i = 2; i < event.target.value.length; i++) { 
             if (!hasNumber(event.target.value[i])) {
                 document.getElementById('productError').innerText = "Product ID can only contain numbers after 'PR'";
                 document.getElementById('productId').style.backgroundColor = "#ffdddd";

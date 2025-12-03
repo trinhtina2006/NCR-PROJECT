@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="style.css">
+        <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Create</title>
+        <script src="menu.js"></script>
+    </head>
+
+    <body>
+        <nav class="navbar">
+            <a href="homepage.html" class="navbar-logo">
+                <img src="images/Crossfire Logo.png" alt="Crossfire Logos"/>
+            </a>
+    
+            <span>CROSSFIRE NCR</span>
+    
+            <ul class="nav-links">
+                <li><a href="homepage.html">Homepage</a></li>
+                <li><a href="P_create.html">Create</a></li>
+            </ul>
+        </nav>
+
+        <!-- POPUP -->
+        <div id="emailPopup" class="popup-email">
+            <div class="popup-content">
+                <h3>Send NCR to Quality Assurance</h3>
+                <p>Please enter the Quality Assurance's email:</p>
+                <input type="email" id="nextEmail" placeholder="example@gmail.com" required>
+                <div class="popup-buttons">
+                    <button class="popup-send" onclick="sendEmail()">SEND</button>
+                    <button class="popup-cancel" onclick="closePopup()">CANCEL</button>
+                </div>
+            </div>
+        </div>
+
+        <header class="header">
+            <h1>NCR</h1>
+            <p>Please fill in the required fields to continue to the next page.</p>
+                
+            <div class="header-info">
+                <label>NCR ID: <span id="ncrId"></span></label><br/>
+                <label>Date & Time: <span id="ncrDateTime"></span></label>
+            </div>
+        </header>
+
+         <form onsubmit="event.preventDefault(); window.location.href='details.html';">
+            <div class="form-container">
+                <fieldset class="form-group">
+                    <legend>Purchasing</legend>
+                        <label>Purchasing's Preliminary Decision: <span class="required-asterisk">*</span></label> 
+                        <div class="four-cols">
+                            <label><input type="radio" name="PP_Decision" value="Return"  />Return to Supplier</label>
+                            <label><input type="radio" name="PP_Decision" value="Rework"  />Rework "In-House"</label> 
+                            <label><input type="radio" name="PP_Decision" value="Scrap"  />Scrap in House</label> 
+                            <label><input type="radio" name="PP_Decision" value="Defer"  />Defer for HBC Engineering</label> 
+                            <span style="color: red;" id="PP_DecisionError"></span>
+                        </div>
+
+                        <div class="three-cols">
+                            <label>Was a CAR raised?<span class="required-asterisk">*</span> </label> 
+                            <label><input type="radio" name="carRaised" value="Yes"  /> YES</label>
+                            <label><input type="radio" name="carRaised" value="No"  /> NO</label> 
+                        </div>
+                        <span style="color: red;" id="carRaisedError"></span>
+                        <div id="carNumberContainer" style="display:none;">
+                            <label><span class="arrow">→</span> Car Number:
+                                <input id="carNumber" type="text" placeholder="eg. CAR-2025-0012" minlength="8" maxlength="14"/>
+                            </label>
+                            <span style="color: red;" id="carNumberError"></span>
+                        </div>
+
+                        <div class="three-cols">
+                            <label>Follow-up Required?<span class="required-asterisk">*</span> </label> 
+                            <label><input type="radio" name="followUp" value="Yes" /> YES</label>
+                            <label><input type="radio" name="followUp" value="No" /> NO </label> 
+                        </div>
+                        <span style="color: red;" id="followUpError"></span>
+                        <div id="indicateTypeContainer" style="display:none;">
+                            <div class="two-cols">
+                                <label><span class="arrow">→</span> Type:
+                                    <input id="indicateType" type="text" placeholder="eg. Validation" minlength="3" maxlength="50"/>
+                                </label>
+                                <label>Expected date: 
+                                    <input type="date" id="expDate" name="expDate"  />
+                                </label>
+                            </div>
+                        </div>
+                        <div class="two-cols">
+                            <span style="color: red;" id="indicateTypeError"></span>
+                            <span style="color: red;" id="expDateError"></span>
+                        </div>
+
+                        <div class="two-cols">
+                            <label>Operations Manager:<span class="required-asterisk">*</span>
+                                <input id="operationsManager" type="text" placeholder="Enter name" minlength="3" maxlength="50"/>
+                            </label>
+                            <label>Date: <span class="required-asterisk">*</span>
+                                <input type="date" id="opDate" name="date"  />
+                            </label>
+                        </div>
+                        <div class="two-cols">
+                            <span style="color: red;" id="operationsManagerError"></span>
+                            <span style="color: red;" id="opDateError"></span>
+                        </div>
+                </fieldset>
+
+                <fieldset>
+                    <div class="three-cols">
+                        <label>Re-inspected Acceptable? <span class="required-asterisk">*</span></label> 
+                        <label><input type="radio" name="re_Inspect" value="Yes"  /> YES</label>
+                        <label><input type="radio" name="re_Inspect" value="No"  /> NO</label> 
+                    </div>
+                    <div id="newNcrIdContainer" style="display:none;">
+                        <label><span class="arrow">→</span> New NCR Number:
+                            <input id="newNcrId" type="number" placeholder="eg. 1234" minlength="3" maxlength="4"/>
+                        </label>
+                        <span style="color: red;" id="newNcrIdError"></span>
+                    </div>
+
+                    <div class="two-cols">
+                        <label>Inspector's Name: <span class="required-asterisk">*</span>
+                            <input id="inspectorName" type="text" placeholder="Enter name" minlength="3" maxlength="50"/>
+                            <span></span><span></span>
+                            <span style="color: red;" id="inspectorNameError"></span>
+                        </label>
+
+                        <label>Date: <span class="required-asterisk">*</span>
+                            <input type="date" id="inspDate" name="date"  />
+                        </label>
+                        <span style="color: red;" id="dateError"></span>
+                    </div>
+                </fieldset>
+
+                <div class="form-btn">
+                    <button type="button" class="save-btn" onclick="SaveWithDataValid()">SAVE</button>
+                    <button type="button" class="cancel-btn" onclick="confirmCancel()">CANCEL</button>
+                </div>            
+            </div>
+            <br/>
+        </form>
+        <script src="P_Edit.js"></script>
+    </body>
+
+    <footer>
+        <div class="footer-div">
+            <div class="footer-col">
+                <p>Copyright &copy; Crossfire NCR Form | Rice Programmers</p>
+            </div>
+            <div class="footer-col">
+                <p>Mail: crossfire@gmail.com</p>
+                <p>Phone: +1 &#40;905&#41; 456-7890</p>
+            </div>
+        </div>
+    </footer>
+</html>

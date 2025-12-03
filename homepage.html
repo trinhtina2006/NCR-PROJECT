@@ -19,6 +19,8 @@
         <ul class="nav-links">
             <li><a href="homepage.html">Homepage</a></li>
             <li><a href="create.html">Create</a></li>
+            <li></li><li></li>
+            <li><a href="#" id="logoutLink">Logout</a></li>
         </ul>
     </nav>
 
@@ -48,6 +50,7 @@
                     <option value="all">All</option>
                     <option value="Quality">Quality</option>
                     <option value="Engineering">Engineering</option>
+                    <option value="Purchasing">Purchasing</option>
                 </select>
 
                 <label for="statusFilter">Filter by Status:</label>
@@ -87,7 +90,7 @@
             </div>
         </section>
 
-        <section>
+        <section id="engineerSection" style="display: none;">
             <div class="list-header">
                 <span>Engineer Action Items</span>
             </div>
@@ -104,6 +107,25 @@
                 <div id="engineerNCR"></div>
             </div>
         </section>
+
+        <section id="purchasingSection" style="display: none;">
+            <div class="list-header">
+                <span>Purchasing Action Items</span>
+            </div>
+
+            <div class="list-container" id="listContainerPurchasing">        
+                <div class="list-item headers">
+                    <span class="list-id">Report ID</span>
+                    <span class="list-supply">Supplier</span>
+                    <span class="list-name">Current Role</span>
+                    <span class="list-time">Time Created</span>
+                    <span class="list-status">Status</span>
+                    <span class="list-actions">Actions</span>
+                </div>
+                <div id="purchasingNCR"></div>
+            </div>
+        </section>
+        <script src="users.js"></script>
         <script src="homepage.js"></script>
     </main>
 

@@ -212,9 +212,17 @@ legend {
     display: grid;
     grid-template-columns: 1fr 1fr; 
 }
+.three-colls{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
 .three-cols {
     display: grid;
     grid-template-columns: 2.2fr 1.7fr 2.5fr; 
+}
+.four-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1.2fr;
 }
 .five-cols {
     display: grid;
@@ -365,10 +373,10 @@ footer {
 }
 
 .popup-content {
-    padding: 25px 30px;
+    padding: 25px 25px;
     border-radius: 10px;
     text-align: center;
-    width: 330px;
+    width: 350px;
     background: #fff;
     border: 3px solid #173451;
 }
@@ -499,6 +507,13 @@ footer {
     border-radius:8px;
 }
 
+#purchasingInfo {
+        display:none; 
+    margin-top:20px; 
+    padding:10px; 
+    border-radius:8px;
+}
+
 /*PRINT*/
 @media print {
     .nav-links,
@@ -621,4 +636,9 @@ footer {
 
 .arrow.open {
     transform: rotate(180deg);
+}
+
+/*PURCHASING*/
+#carNumberContainer {
+    display: none;
 }

@@ -3,6 +3,14 @@ const reportId = params.get('id');
 
 const reportsLocal = JSON.parse(localStorage.getItem("reports")) || {};
 
+const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+if (!currentUser) {
+    alert("You must login first!");
+    window.location.href = "login.html";
+} else {
+    console.log("Logged in as:", currentUser.role);
+}
+
 if (reportId && reportsLocal[reportId]) {
     displayReport(reportsLocal[reportId], reportId);
 } else {
@@ -137,6 +145,18 @@ function renderList(reports) {
                             <i class="bi bi-trash"></i> Delete
                         </button>
                     `
+                    : r.state === "PurchasingFilled"
+                    ? `
+                        <button class="action-btn edit-btn" onclick="location.href='P_Edit.html?id=${r.id}'">
+                            <i class="bi bi-pencil-square"></i> Edit
+                        </button>
+                        <button class="action-btn details-btn" onclick="location.href='details.html?id=${r.id}'">
+                            <i class="bi bi-eye"></i> Details
+                        </button>
+                        <button class="action-btn delete-btn" onclick="deleteReport('${r.id}')">
+                            <i class="bi bi-trash"></i> Delete
+                        </button>
+                    `
                     : `
                         <button class="action-btn edit-btn" onclick="location.href='edit.html?id=${r.id}'">
                             <i class="bi bi-pencil-square"></i> Edit
@@ -190,7 +210,9 @@ function deleteReport(id) {
 /* ENGINEER LIST */
 function renderEngineerList() {
     const reports = JSON.parse(localStorage.getItem("reports")) || {};
-    const pendingNCRs = Object.entries(reports).filter(([id, ncr]) => ncr.state === "PendingEngineer");
+    const pendingNCRs = Object.entries(reports)
+        .filter(([id, ncr]) => ncr.state === "PendingEngineer")
+        .filter(([id, ncr]) => currentUser.Role === "Admin" || ncr.nextEmail === currentUser.email);
     const container = document.getElementById("engineerNCR");
     container.innerHTML = "";
 
@@ -220,7 +242,7 @@ function renderEngineerList() {
                         <i class="bi bi-x-lg"></i> Close
                     </button>
                 </span>
-            </div
+            </div>
             `;
         });
     }
@@ -243,8 +265,81 @@ function closeNCR(id) {
         }
 
         renderEngineerList(); 
+        renderPurchasingList();
         renderList(allReports);
     }
 }
 
-renderEngineerList();
+
+/* PURCHASING LIST */
+function renderPurchasingList() {
+    const reports = JSON.parse(localStorage.getItem("reports")) || {};
+    const pendingNCRs = Object.entries(reports)
+        .filter(([id, ncr]) => ncr.state === "EngineerFilled")
+        .filter(([id, ncr]) => currentUser.Role === "Admin" || ncr.nextEmail === currentUser.email);
+    const container = document.getElementById("purchasingNCR");
+    container.innerHTML = "";
+
+    if (pendingNCRs.length === 0) {
+        container.innerHTML = "<p>No pending NCRs</p>";
+        return;
+    }
+
+    pendingNCRs.forEach(([id, ncr]) => {
+        const status = ncr.isDraft ? "Draft" : (ncr.depClosed === "Yes" ? "Closed" : "Active");
+        const fillLink = `P_Create.html?id=${id}`;
+        const fillLabel = "Fill in";
+
+        container.innerHTML += `
+        <div class="list-item">
+            <span class="list-id">${id}</span>
+            <span class="list-supply">${ncr.supplier}</span>
+            <span class="list-name">${ncr.dept}</span>
+            <span class="list-time">${new Date(ncr.date).toLocaleDateString()}</span>
+            <span class="list-status">${status}</span>
+            <span class="list-actions">
+                <button class="action-btn fill-btn" onclick="location.href='${fillLink}'">
+                    <i class="bi bi-journal-text"></i> ${fillLabel}
+                </button>
+                <button class="action-btn details-btn" onclick="location.href='details.html?id=${id}'">
+                    <i class="bi bi-eye"></i> Details
+                </button>
+                <button class="action-btn close-btn" onclick="closeNCR('${id}')">
+                    <i class="bi bi-x-lg"></i> Close
+                </button>
+            </span>
+        </div>
+        `;
+    });
+}
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const logoutLink = document.getElementById("logoutLink");
+    if (logoutLink) {
+        logoutLink.addEventListener("click", function (e) {
+            e.preventDefault();
+            localStorage.removeItem("currentUser");
+            window.location.href = "login.html";
+        });
+    }
+});
+
+
+const engineerSection = document.getElementById("engineerSection");
+if (currentUser && (currentUser.Role === "Admin" || currentUser.Role === "Engineer")) {
+    engineerSection.style.display = "block";
+    renderEngineerList();
+} else {
+    engineerSection.style.display = "none";
+}
+
+const purchasingSection = document.getElementById("purchasingSection");
+if (currentUser && (currentUser.Role === "Admin" || currentUser.Role === "Purchasing")) {
+    purchasingSection.style.display = "block";
+    renderPurchasingList();
+} else {
+    purchasingSection.style.display = "none";
+}
+
+

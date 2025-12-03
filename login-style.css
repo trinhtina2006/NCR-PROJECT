@@ -1,0 +1,104 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Merriweather, serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(270deg, white, #5897c9, #376081, #173451);
+}
+
+
+.login-inbox {
+    position: relative;
+    width: 400px;
+    height: 450px;
+    background: white;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    font-size: 20px;
+    color: #162938;
+    text-align: center;
+}
+
+.input-box {
+    position: relative;
+    width: 310px;
+    height: 30px 0;
+    border-bottom: 2px solid #173451;
+    margin: 15px 0;
+}
+
+.input-box label {
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+    font-size: 1.1rem;
+    color: #3d6b91;
+    pointer-events: none;
+}
+
+
+.input-box input:focus~label,
+.input-box input:not(:placeholder-shown) ~ label {
+    top: -5px;
+}
+
+.input-box input:placeholder-shown ~ label {
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.input-box input {
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    color: #173451;
+    padding: 0 35px 0 5px;
+}
+
+.input-box .icon {
+    position: absolute;
+    right: 8px;
+    top: -4px;
+    color: #3d6b91;
+    font-size: 1.2rem;
+    line-height: 57px;
+}
+
+.remember-me {
+    margin: -5px 0 15px 0;
+    font-size: 1rem;
+    color: #173451;
+    display: flex;
+    justify-content: space-between;
+    font-style: italic;
+}
+
+.remember-me label input {
+    margin-right: 3px;
+}
+
+button {
+    width: 100%;
+    height: 45px;
+    background: #162938;
+    border: none;
+    outline: none;
+    border-radius: 13px;
+    cursor: pointer;
+    font-size: 1rem;
+    color: white;
+}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NCR Login</title>
+    <link rel="stylesheet" href="login-style.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+        <div class="login-inbox">
+            <form id="loginForm">
+                <h1>Login</h1>
+                <div class="input-box">
+                    <span class="icon"><ion-icon name="mail-sharp"></ion-icon></span>
+                    <input type="email" id="email" required placeholder=" "> 
+                    <label>Email</label>
+                </div>
+                <div class="input-box">
+                    <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+                    <input type="password" id="password" required placeholder=" ">
+                    <label>Password</label>
+                </div>
+                <div class="remember-me">
+                    <label><input type="checkbox" name="remember" id="remember"> Remember me</label>
+                </div>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="users.js"></script>
+    <script src="login.js"></script>
+</body>
+
+</html>

@@ -42,7 +42,8 @@ function saveFormData() {
             dept: "Quality",
             nonConforming: nonConforming,
             state:"PendingEngineer",
-            depClosed: "No"
+            depClosed: "No",
+            nextEmail: document.getElementById("nextEmail").value
         };
 
     let reports = JSON.parse(localStorage.getItem("reports")) || {};
@@ -133,7 +134,7 @@ function closePopup() {
 
 function sendEmail() 
 {
-    const email = document.getElementById("emailInput").value;
+    const email = document.getElementById("nextEmail").value;
     if (email.trim() === "") {
       alert("Please enter an email address!");
       return;
@@ -373,7 +374,8 @@ function saveDraft() {
         quaDefect: document.getElementById("quaDefect").value,
         nonConforming: getRadioValue("nonConforming"),
         isDraft: true,
-        dept:"Quality"
+        dept:"Quality",
+        nextEmail: document.getElementById("nextEmail").value
     };
 
     const reports = JSON.parse(localStorage.getItem("reports")) || {};

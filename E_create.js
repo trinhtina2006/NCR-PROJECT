@@ -43,6 +43,7 @@ function saveFormData() {
     existingNCR.E_name = document.getElementById("repName").value;
     existingNCR.dept = "Engineering";
     existingNCR.state = "EngineerFilled";  
+    existingNCR.nextEmail= document.getElementById("nextEmail").value;
 
     reports[ncrId] = existingNCR;
     localStorage.setItem("reports", JSON.stringify(reports));
@@ -101,7 +102,7 @@ function closePopup() {
 
 function sendEmail() 
 {
-    const email = document.getElementById("emailInput").value;
+    const email = document.getElementById("nextEmail").value;
     if (email.trim() === "") {
       alert("Please enter an email address!");
       return;
@@ -280,7 +281,8 @@ function saveDraft() {
         revDate: document.getElementById("revDate").value || "",
         E_date: document.getElementById("repDate").value || "",
         E_name: document.getElementById("repName").value || "",
-        isDraft:true
+        isDraft:true,
+        nextEmail: document.getElementById("nextEmail").value
     };
     localStorage.setItem("reports", JSON.stringify(reports));
 
